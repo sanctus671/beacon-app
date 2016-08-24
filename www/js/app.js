@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('app', ['ionic', 'app.controllers', 'app.services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, AuthService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,7 +20,54 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    
+    $rootScope.devicePlatform = ionic.Platform.platform();
+
+    AuthService.userIsLoggedIn().then(function(response){
+        
+
+    },function(response){
+        //reregister user
+        AuthService.register();
+    });     
+
+  
+    $ionicPlatform.on("resume", function(){ 
+        AuthService.userIsLoggedIn().then(function(){
+            
+        },function(){
+            //reregister user
+            AuthService.register();
+        });
+    });    
+    
+    
+    
+    
   });
+  
+    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){ // UI Router Authentication Check
+      if (toState.data.authenticate){
+          AuthService.userIsLoggedIn().then(function(response){
+              
+          },function(){
+              //reregister user
+              AuthService.register();
+          });
+      }
+
+    });  
+
+    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){ // UI Router Authentication Check
+        
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.close();
+        }        
+
+    });    
+  
+  
+  
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -40,46 +87,55 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   // Each tab has its own nav history stack:
 
-  .state('tab.dash', {
-    url: '/dash',
+  .state('tab.notifications', {
+    url: '/notifications',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'tab-notifications': {
+        templateUrl: 'templates/tab-notifications.html',
+        controller: 'NotificationsCtrl'
       }
-    }
+    },
+    data: {
+      authenticate: true
+    }    
   })
 
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
 
-  .state('tab.account', {
-    url: '/account',
+
+  .state('tab.drag', {
+    url: '/drag',
     views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+      'tab-drag': {
+        templateUrl: 'templates/tab-drag.html',
+        controller: 'DragCtrl'
       }
-    }
-  });
+    },
+    data: {
+      authenticate: true
+    } 
+  })
+  
+  .state('tab.collection', {
+    url: '/collection',
+    views: {
+      'tab-collection': {
+        templateUrl: 'templates/tab-collection.html',
+        controller: 'CollectionCtrl'
+      }
+    },
+    data: {
+      authenticate: true
+    } 
+    })
+  
+    
+    
+    
+    ;
+  
+  
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/tab/drag');
 
 });

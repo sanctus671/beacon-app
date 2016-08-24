@@ -1,22 +1,92 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.beaconapp174418" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>beaconApp</name>
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.appsy.beaconapp" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+  <name>Beacon App</name>
   <description>
-        An Ionic Framework and Cordova project.
+        A beacon advertising app.
     </description>
-  <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
+  <author email="taylor@taylorhamling.com" href="http://www.taylorhamling.com">
+      Taylor Hamling
     </author>
-  <content src="index.html"/>
-  <access origin="*"/>
-  <preference name="webviewbounce" value="false"/>
-  <preference name="UIWebViewBounce" value="false"/>
-  <preference name="DisallowOverscroll" value="true"/>
-  <preference name="SplashScreenDelay" value="2000"/>
-  <preference name="FadeSplashScreenDuration" value="2000"/>
-  <preference name="android-minSdkVersion" value="16"/>
-  <preference name="BackupWebStorage" value="none"/>
-  <feature name="StatusBar">
-    <param name="ios-package" value="CDVStatusBar" onload="true"/>
-  </feature>
+  
+  
+    <content src="index.html" />
+	<preference name="phonegap-version" value="cli-6.0.0" />
+	<preference name="android-build-tool" value="gradle" /> 
+    <preference name="permissions" value="none" />
+    <preference name="orientation" value="default" />
+    <preference name="target-device" value="universal" />
+    <preference name="fullscreen" value="false" />
+    <preference name="webviewbounce" value="true" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="stay-in-webview" value="false" />
+    <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+	<preference name="loadUrlTimeoutValue" value="700000" />
+	
+
+    <preference name="disable-cursor" value="false" />
+    <preference name="android-minSdkVersion" value="15" />
+    <preference name="android-installLocation" value="auto" />
+
+    <gap:plugin name="cordova-plugin-network-information" source="npm"/>
+
+
+	
+	<gap:plugin name="cordova-plugin-statusbar" source="npm"/>
+	
+
+	<gap:plugin name="cordova-plugin-geolocation" source="npm"/>
+	<gap:plugin name="com.commontime.cordova.beacon" source="npm"/>
+
+
+	<gap:plugin name="ionic-plugin-keyboard" source="npm"/>	
+    <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
+	<gap:plugin name="cordova-plugin-inappbrowser" source="npm"/>	
+
+	<gap:plugin name="cordova-plugin-whitelist" source="npm"/>		
+	
+	
+	
+    <icon gap:platform="android" gap:qualifier="ldpi" src="resources/icon/android/icon-36-ldpi.png" />
+    <icon gap:platform="android" gap:qualifier="mdpi" src="resources/icon/android/icon-48-mdpi.png" />
+    <icon gap:platform="android" gap:qualifier="hdpi" src="resources/icon/android/icon-72-hdpi.png" />
+    <icon gap:platform="android" gap:qualifier="xhdpi" src="resources/icon/android/icon-96-xhdpi.png" />
+	<icon gap:platform="android" gap:qualifier="xxhdpi" src="resources/icon/android/icon-144-xxhdpi.png" />
+	<icon gap:platform="android" gap:qualifier="xxxhdpi" src="resources/icon/android/icon-192-xxxhdpi.png" />
+	
+    <icon gap:platform="ios" src="resources/icon/ios/icon.png" width="57" height="57"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-2x.png" width="114" height="114"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-40.png" width="40" height="40"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-40-2x.png" width="80" height="80"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-50.png" width="50" height="50"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-50-2x.png" width="100" height="100"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-60.png" width="60" height="60"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-60-2x.png" width="120" height="120"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-60-3x.png" width="180" height="180"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-72.png" width="72" height="72"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-72-2x.png" width="144" height="144"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-76.png" width="76" height="76"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-76-2x.png" width="152" height="152"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-small.png" width="29" height="29"/>
+    <icon gap:platform="ios" src="resources/icon/ios/icon-small-2x.png" width="58" height="58"/>	
+	
+
+	<icon src="resources/icon.png" />
+
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+	<allow-navigation href="http://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
 </widget>

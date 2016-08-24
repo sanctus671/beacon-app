@@ -1,50 +1,133 @@
-angular.module('starter.services', [])
+angular.module('app.services', [])
 
-.factory('Chats', function() {
-  // Might use a resource here that returns a JSON array
 
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'img/ben.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'img/max.png'
-  }, {
-    id: 2,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'img/adam.jpg'
-  }, {
-    id: 3,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'img/perry.png'
-  }, {
-    id: 4,
-    name: 'Mike Harrington',
-    lastText: 'This is wicked good ice cream.',
-    face: 'img/mike.png'
-  }];
+.service('AuthService', function($http, $q, API_URL) {
+    this.register = function(){
+        var deferred = $q.defer(),
+            AuthService = this;
+        $http.post(API_URL + "/auth/signup")
+        .success(function(data) {
+            console.log(data);
+            AuthService.saveUser(data);            
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
 
-  return {
-    all: function() {
-      return chats;
-    },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
+        return deferred.promise;        
+    };
+    
+    
+    this.userIsLoggedIn = function(){
+        var deferred = $q.defer(),  
+            AuthService = this,
+            user = AuthService.getUser();
+        if (user){
+            deferred.resolve(user);           
         }
-      }
-      return null;
+        else{
+            deferred.reject("No user saved");
+        }
+        return deferred.promise;
     }
-  };
+    this.saveUser = function(user){
+        window.localStorage.ba_user = JSON.stringify(user);
+    };
+
+    this.getUser = function(){
+        var data = window.localStorage.ba_user ? JSON.parse(window.localStorage.ba_user) : null;
+        return data;
+    };  
+    
+    this.removeUser = function(){
+        window.localStorage.ba_user = null;
+    } 
+
+    
+    
+    this.logout = function(){
+    var deferred = $q.defer();  
+    var AuthService = this,
+    user = AuthService.getUser();
+    if (!user){deferred.reject("Not logged in");}
+    else if (!user.sessionid){deferred.reject("Not logged in");}
+    else{
+        AuthService.removeUser();
+        deferred.resolve();
+    }
+
+    return deferred.promise;        
+    }
+})
+
+
+.service('MainService', function($http, $q, API_URL, AuthService) {
+    this.getAdverts = function(beacon){
+        var deferred = $q.defer(),
+            user = AuthService.getUser();
+        if (!user){deferred.reject("No token");}   
+        $http.get(API_URL + "/adverts?token=" + user.token)
+        .success(function(data) {
+            console.log(data);
+                      
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;        
+    };
+    
+    this.getAdvert = function(id){
+        var deferred = $q.defer(),
+            user = AuthService.getUser();
+        if (!user){deferred.reject("No token");}   
+        $http.get(API_URL + "/adverts/" + id + "?token=" + user.token)
+        .success(function(data) {
+            console.log(data);
+                      
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;        
+    };    
+    
+    this.getRecords = function(){
+        var deferred = $q.defer(),
+            user = AuthService.getUser();
+        if (!user){deferred.reject("No token");}   
+        $http.get(API_URL + "/records?token=" + user.token)
+        .success(function(data) {
+            console.log(data);
+                      
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;        
+    };  
+    
+    this.saveRecord = function(record){
+        var deferred = $q.defer(),
+            user = AuthService.getUser();
+        if (!user){deferred.reject("No token");}   
+        $http.post(API_URL + "/records/store?token=" + user.token, record)
+        .success(function(data) {
+            console.log(data);
+                      
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;        
+    };     
 });
