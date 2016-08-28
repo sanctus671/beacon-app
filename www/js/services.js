@@ -46,23 +46,33 @@ angular.module('app.services', [])
 
     
     
-    this.logout = function(){
-    var deferred = $q.defer();  
-    var AuthService = this,
-    user = AuthService.getUser();
-    if (!user){deferred.reject("Not logged in");}
-    else if (!user.sessionid){deferred.reject("Not logged in");}
-    else{
+    this.logout = function(){ 
+        var AuthService = this;
         AuthService.removeUser();
-        deferred.resolve();
-    }
-
-    return deferred.promise;        
     }
 })
 
 
 .service('MainService', function($http, $q, API_URL, AuthService) {
+    
+    this.getBeacons = function(){
+        var deferred = $q.defer(),
+            user = AuthService.getUser();
+        if (!user){deferred.reject("No token");}   
+        $http.get(API_URL + "/beaconsapp?token=" + user.token)
+        .success(function(data) {
+            console.log(data);
+                      
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;        
+    };    
+    
+    
     this.getAdverts = function(beacon){
         var deferred = $q.defer(),
             user = AuthService.getUser();

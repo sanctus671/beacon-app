@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers', 'app.services'])
+angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config', 'ngCordovaBeacon'])
 
 .run(function($ionicPlatform, $rootScope, AuthService) {
   $ionicPlatform.ready(function() {
@@ -24,12 +24,25 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services'])
     $rootScope.devicePlatform = ionic.Platform.platform();
 
     AuthService.userIsLoggedIn().then(function(response){
-        
+        console.log(response);
 
     },function(response){
         //reregister user
         AuthService.register();
-    });     
+    });    
+    
+    
+    if (window.cordova && window.cordova.plugins && window.cordova.plugins.locationManager) {
+        cordova.plugins.locationManager.isBluetoothEnabled()
+            .then(function(isEnabled){
+                console.log("isEnabled: " + isEnabled);
+                if (!isEnabled) {
+                    cordova.plugins.locationManager.enableBluetooth();        
+                }
+            })
+            .fail(function(e) { console.error(e); })
+            .done();   
+    }
 
   
     $ionicPlatform.on("resume", function(){ 
@@ -82,7 +95,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services'])
     .state('tab', {
     url: '/tab',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/tabs.html',
+    controller: 'TabsCtrl'
   })
 
   // Each tab has its own nav history stack:

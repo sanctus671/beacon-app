@@ -1,4 +1,14 @@
 <ion-view view-title="Notifications">
   <ion-content>
+      
+    <ion-list>
+      <ion-item ng-repeat="beacon in beacons">
+        <h2>Advert in range</h2>
+        <p>13m away {{beacon}}</p>
+      </ion-item>
+    </ion-list>      
+      
+      
+      
   </ion-content>
 </ion-view>
