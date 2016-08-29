@@ -90,11 +90,11 @@ angular.module('app.services', [])
         return deferred.promise;        
     };
     
-    this.getAdvert = function(id){
+    this.getAdvert = function(beacon){
         var deferred = $q.defer(),
             user = AuthService.getUser();
         if (!user){deferred.reject("No token");}   
-        $http.get(API_URL + "/adverts/" + id + "?token=" + user.token)
+        $http.get(API_URL + "/advertsapp?token=" + user.token + "&uuid=" + beacon.uuid + "&major=" + beacon.major + "&minor=" + beacon.minor)
         .success(function(data) {
             console.log(data);
                       

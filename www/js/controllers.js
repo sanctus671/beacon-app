@@ -4,10 +4,11 @@ angular.module('app.controllers', [])
     $rootScope.beacons = [];
     MainService.getBeacons().then(function(data){
         $rootScope.beacons = data;
+        console.log($rootScope.beacons);
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.locationManager){
             for (var index in $rootScope.beacons){
                 var beacon = $rootScope.beacons[index];
-                $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("adbeacon" + index, beacon[index]));
+                $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("adbeacon" + index, beacon.uuid, beacon.major, beacon.minor));
             }
         }
     },function(data){
@@ -112,9 +113,9 @@ angular.module('app.controllers', [])
             var Y = result.y;
             var Z = result.z;
             var timeStamp = result.timestamp;
-            if (false && $scope.beacons.length > 0){ //TODO have condition for phone acceleration
+            if ((X > 1 && Y > 8 && Z > -1 && Z < 1) && $scope.beacons.length > 0){ //TODO have condition for phone acceleration
                 var beacon = $scope.beacons[0]; //TODO find cloest beacon
-                $scope.getAdvert(beacon.uuid); //TODO add uuid, minor, major into api instead of beacon code
+                $scope.getAdvert(beacon); //TODO add uuid, minor, major into api instead of beacon code
                 $scope.advertModal.show();                
             }
             console.log(result);
@@ -132,7 +133,7 @@ angular.module('app.controllers', [])
             var long = position.coords.longitude
             console.log(position);
             var uuid = $cordovaDevice.getUUID();
-            var record = {action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
+            var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
             MainService.saveRecord(record);
           }, function(err) {
             // error
