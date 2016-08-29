@@ -3,22 +3,25 @@ angular.module('app.controllers', [])
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService) {
     $rootScope.beacons = [];
     document.addEventListener("deviceready", function(){
-        MainService.getBeacons().then(function(data){
-            $rootScope.beacons = data;
-            console.log($rootScope.beacons);
-            if (window.cordova && window.cordova.plugins && window.cordova.plugins.locationManager){
-                for (var index in $rootScope.beacons){
-                    var beacon = $rootScope.beacons[index];
-                    console.log("ranging for beacon " + beacon.uuid + beacon.major + beacon.minor)
-                    $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("adbeacon" + index, beacon.uuid, parseInt(beacon.major), parseInt(beacon.minor)));
+        $cordovaBeacon.requestAlwaysAuthorization().then(function(result){
+            console.log(result);
+            MainService.getBeacons().then(function(data){
+                $rootScope.beacons = data;
+                console.log($rootScope.beacons);
+                if (window.cordova && window.cordova.plugins && window.cordova.plugins.locationManager){
+                    for (var index in $rootScope.beacons){
+                        var beacon = $rootScope.beacons[index];
+                        console.log("ranging for beacon " + beacon.uuid + beacon.major + beacon.minor)
+                        $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("adbeacon" + index, beacon.uuid, parseInt(beacon.major), parseInt(beacon.minor)));
+                    }
                 }
-            }
-        },function(data){
-            $scope.$broadcast('scroll.refreshComplete');
-            if (data.status_code === 401){
-                AuthService.register();
-            } 
-        })   
+            },function(data){
+                $scope.$broadcast('scroll.refreshComplete');
+                if (data.status_code === 401){
+                    AuthService.register();
+                } 
+            }) 
+        })
     },false);
 })
 
@@ -101,10 +104,10 @@ angular.module('app.controllers', [])
             } 
         })        
     }
-    
+    $scope.acceleration = {};
     // watch Acceleration
     document.addEventListener("deviceready", function(){
-        var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 2000 });
+        var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 1000 });
         watch.then(
           null,
           function(error) {
@@ -112,18 +115,19 @@ angular.module('app.controllers', [])
           console.log(error);
           },
           function(result) {
-            var X = result.x;
-            var Y = result.y;
-            var Z = result.z;
+            var x = result.x;
+            var y = result.y;
+            var z = result.z;
             var timeStamp = result.timestamp;
-            if (X > 1 && Y > 8 && Z > -1 && Z < 1){console.log("grabbed")}
-            if ((X > 1 && Y > 8 && Z > -1 && Z < 1) && $scope.beacons.length > 0){ //TODO have condition for phone acceleration
+            
+            if ($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3){console.log("grabbed")}
+            if (($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3) && $scope.beacons.length > 0){ //TODO have condition for phone acceleration
                 console.log("hey its met");
                 var beacon = $scope.beacons[0]; //TODO find cloest beacon
                 $scope.getAdvert(beacon); //TODO add uuid, minor, major into api instead of beacon code
                 $scope.advertModal.show();                
             }
-            console.log(result);
+            $scope.acceleration = result;
         });
     },false);
     
