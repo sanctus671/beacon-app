@@ -99,7 +99,7 @@ angular.module('app.controllers', [])
     }
     
     // watch Acceleration
-
+    /*
     var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 20000 });
     watch.then(
       null,
@@ -119,6 +119,17 @@ angular.module('app.controllers', [])
         }
         console.log(result);
     });
+    
+    */
+   
+    var watchID = navigator.accelerometer.watchAcceleration(function(result){
+        console.log(result);
+        if (false && $scope.beacons.length > 0){ //TODO have condition for phone acceleration
+            var beacon = $scope.beacons[0]; //TODO find cloest beacon
+            $scope.getAdvert(beacon.uuid); //TODO add uuid, minor, major into api instead of beacon code
+            $scope.advertModal.show();                
+        }        
+    }, function(){}, {frequency:1000});   
   
     
     $scope.saveRecord = function(action){ //executed when an action is made on an advert
