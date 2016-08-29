@@ -2,21 +2,24 @@ angular.module('app.controllers', [])
 
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService) {
     $rootScope.beacons = [];
-    MainService.getBeacons().then(function(data){
-        $rootScope.beacons = data;
-        console.log($rootScope.beacons);
-        if (window.cordova && window.cordova.plugins && window.cordova.plugins.locationManager){
-            for (var index in $rootScope.beacons){
-                var beacon = $rootScope.beacons[index];
-                $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("adbeacon" + index, beacon.uuid, beacon.major, beacon.minor));
+    document.addEventListener("deviceready", function(){
+        MainService.getBeacons().then(function(data){
+            $rootScope.beacons = data;
+            console.log($rootScope.beacons);
+            if (window.cordova && window.cordova.plugins && window.cordova.plugins.locationManager){
+                for (var index in $rootScope.beacons){
+                    var beacon = $rootScope.beacons[index];
+                    console.log("ranging for beacon " + beacon.uuid + beacon.major + beacon.minor)
+                    $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("adbeacon" + index, beacon.uuid, parseInt(beacon.major), parseInt(beacon.minor)));
+                }
             }
-        }
-    },function(data){
-        $scope.$broadcast('scroll.refreshComplete');
-        if (data.status_code === 401){
-            AuthService.register();
-        } 
-    })    
+        },function(data){
+            $scope.$broadcast('scroll.refreshComplete');
+            if (data.status_code === 401){
+                AuthService.register();
+            } 
+        })   
+    },false);
 })
 
 
