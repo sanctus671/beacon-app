@@ -63,7 +63,7 @@ angular.module('app.services', [])
         .success(function(data) {
             console.log(data);
                       
-            deferred.resolve(data);
+            deferred.resolve(data.beacons);
         })
         .error(function(data) {
             deferred.reject(data);
@@ -81,7 +81,7 @@ angular.module('app.services', [])
         .success(function(data) {
             console.log(data);
                       
-            deferred.resolve(data);
+            deferred.resolve(data.adverts);
         })
         .error(function(data) {
             deferred.reject(data);
@@ -115,7 +115,7 @@ angular.module('app.services', [])
         .success(function(data) {
             console.log(data);
                       
-            deferred.resolve(data);
+            deferred.resolve(data.records);
         })
         .error(function(data) {
             deferred.reject(data);
