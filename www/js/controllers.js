@@ -116,7 +116,9 @@ angular.module('app.controllers', [])
             var Y = result.y;
             var Z = result.z;
             var timeStamp = result.timestamp;
+            if (X > 1 && Y > 8 && Z > -1 && Z < 1){console.log("grabbed")}
             if ((X > 1 && Y > 8 && Z > -1 && Z < 1) && $scope.beacons.length > 0){ //TODO have condition for phone acceleration
+                console.log("hey its met");
                 var beacon = $scope.beacons[0]; //TODO find cloest beacon
                 $scope.getAdvert(beacon); //TODO add uuid, minor, major into api instead of beacon code
                 $scope.advertModal.show();                
