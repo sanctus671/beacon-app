@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config', 'ngCordovaBeacon'])
+angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config', 'ngCordova','ngCordovaBeacon'])
 
 .run(function($ionicPlatform, $rootScope, AuthService) {
   $ionicPlatform.ready(function() {
@@ -73,9 +73,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){ // UI Router Authentication Check
         
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-            cordova.plugins.Keyboard.close();
-        }        
+       
 
     });    
   
