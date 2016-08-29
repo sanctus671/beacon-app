@@ -37,6 +37,7 @@
 	
 
 	<gap:plugin name="cordova-plugin-geolocation" source="npm"/>
+        <gap:plugin name="cordova-plugin-device-motion" source="npm"/>
 	<gap:plugin name="com.commontime.cordova.beacon" source="npm"/>
 
 
