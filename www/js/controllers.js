@@ -103,25 +103,24 @@ angular.module('app.controllers', [])
             if ($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3){
                 console.log("grabbed");
                 console.log($rootScope.inRangeBeacons);
-                console.log($rootScope.inRangeBeacons.length);
-                console.log(Object.keys($rootScope.inRangeBeacons).length)
             }
             if (($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3) && Object.keys($rootScope.inRangeBeacons).length > 0){ //TODO have condition for phone acceleration
                 console.log("hey its met");
                 
                 var beacon = {}; var proximity = false; //TODO find cloest beacon
                 for (var index in $rootScope.inRangeBeacons){
+                    console.log($rootScope.inRangeBeacons[index]);
                     if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate"){
-                        beacon === $rootScope.inRangeBeacons[index];
+                        beacon = $rootScope.inRangeBeacons[index];
                         proximity = "ProximityImmediate";
                         break;
                     }
                     else if ($rootScope.inRangeBeacons[index].proximity === "ProximityNear" && proximity !== "ProximityImmediate"){
-                        beacon === $rootScope.inRangeBeacons[index];
+                        beacon = $rootScope.inRangeBeacons[index];
                         proximity = "ProximityNear";
                     }
                     else if (proximity !== "ProximityImmediate" && proximity !== "ProximityNear"){
-                        beacon === $rootScope.inRangeBeacons[index];
+                        beacon = $rootScope.inRangeBeacons[index];
                     }
                 }
                 console.log(beacon);
