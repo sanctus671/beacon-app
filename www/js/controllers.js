@@ -9,20 +9,17 @@ angular.module('app.controllers', [])
         $cordovaBeacon.requestWhenInUseAuthorization();
         
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
-            console.log(event);
             var uniqueBeaconKey;
             for(var i = 0; i < pluginResult.beacons.length; i++) {
                 uniqueBeaconKey = pluginResult.beacons[i].uuid + ":" + pluginResult.beacons[i].major + ":" + pluginResult.beacons[i].minor;
                 $rootScope.inRangeBeacons[uniqueBeaconKey] = pluginResult.beacons[i];
             }
-            console.log($rootScope.inRangeBeacons);
             $scope.$apply();
         });
         MainService.getBeacons().then(function(data){
             $rootScope.rangedBeacons = data;
             for (var index in $rootScope.rangedBeacons){
                 var beacon = $rootScope.rangedBeacons[index];
-                console.log("ranging for " + beacon.uuid + ":" + beacon.major + ":" + beacon.minor);
                 $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));
             }
         });
@@ -36,8 +33,6 @@ angular.module('app.controllers', [])
 .controller('NotificationsCtrl', function($scope, $cordovaBeacon, $rootScope) {
     $scope.notifications = [];
     
-    $scope.beacons = [];
-
     
     
 
@@ -106,9 +101,25 @@ angular.module('app.controllers', [])
             var timeStamp = result.timestamp;
             
             if ($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3){console.log("grabbed")}
-            if (($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3) && $scope.beacons.length > 0){ //TODO have condition for phone acceleration
+            if (($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3) && $rootScope.inRangeBeacons.length > 0){ //TODO have condition for phone acceleration
                 console.log("hey its met");
-                var beacon = $scope.beacons[0]; //TODO find cloest beacon
+                
+                var beacon = {}; var proximity = false; //TODO find cloest beacon
+                for (var index in $rootScope.inRangeBeacons){
+                    if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate"){
+                        beacon === $rootScope.inRangeBeacons[index];
+                        proximity = "ProximityImmediate";
+                        break;
+                    }
+                    else if ($rootScope.inRangeBeacons[index].proximity === "ProximityNear" && proximity !== "ProximityImmediate"){
+                        beacon === $rootScope.inRangeBeacons[index];
+                        proximity = "ProximityNear";
+                    }
+                    else if (proximity !== "ProximityImmediate" && proximity !== "ProximityNear"){
+                        beacon === $rootScope.inRangeBeacons[index];
+                    }
+                }
+                console.log(beacon);
                 $scope.getAdvert(beacon); //TODO add uuid, minor, major into api instead of beacon code
                 $scope.advertModal.show();                
             }

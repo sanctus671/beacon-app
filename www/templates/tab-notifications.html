@@ -2,10 +2,16 @@
   <ion-content>
       
     <ion-list>
-      <ion-item ng-repeat="beacon in beacons">
+      <ion-item ng-repeat="beacon in inRangeBeacons">
         <h2>Advert in range</h2>
-        <p>13m away {{beacon}}</p>
+        <p ng-if="beacon.proximity === 'ProximityImmediate'">Next to you</p>
+        <p ng-if="beacon.proximity === 'ProximityNear'">Close by</p>
+        <p ng-if="beacon.proximity !== 'ProximityNear' && beacon.proximity !== 'ProximityImmediate'">Far away</p>
       </ion-item>
+      <ion-item ng-repeat="notification in notifications">
+        <h2>notification.title</h2>
+        <p>{{notifcation.description}}</p>
+      </ion-item>        
     </ion-list>      
       
       
