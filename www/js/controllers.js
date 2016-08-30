@@ -8,6 +8,7 @@ angular.module('app.controllers', [])
         $cordovaBeacon.requestWhenInUseAuthorization();
  
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
+            console.log(event);
             var uniqueBeaconKey;
             for(var i = 0; i < pluginResult.beacons.length; i++) {
                 uniqueBeaconKey = pluginResult.beacons[i].uuid + ":" + pluginResult.beacons[i].major + ":" + pluginResult.beacons[i].minor;
