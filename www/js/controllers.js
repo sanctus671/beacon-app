@@ -1,24 +1,31 @@
 angular.module('app.controllers', [])
 
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform) {
-    $scope.beacons = {};
- 
+    
+    $rootScope.rangedBeacons = [];
+    $rootScope.inRangeBeacons = [];
     $ionicPlatform.ready(function() {
- 
+        
         $cordovaBeacon.requestWhenInUseAuthorization();
- 
+        
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
             console.log(event);
             var uniqueBeaconKey;
             for(var i = 0; i < pluginResult.beacons.length; i++) {
                 uniqueBeaconKey = pluginResult.beacons[i].uuid + ":" + pluginResult.beacons[i].major + ":" + pluginResult.beacons[i].minor;
-                $scope.beacons[uniqueBeaconKey] = pluginResult.beacons[i];
+                $rootScope.inRangeBeacons[uniqueBeaconKey] = pluginResult.beacons[i];
             }
-            console.log($scope.beacons)
+            console.log($rootScope.inRangeBeacons);
             $scope.$apply();
         });
- 
-        $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote", "b9407f30-f5f8-466e-aff9-25556b57fe6d"));
+        MainService.getBeacons().then(function(data){
+            $rootScope.rangedBeacons = data;
+            for (var index in $rootScope.rangedBeacons){
+                var beacon = $rootScope.rangedBeacons[index];
+                console.log("ranging for " + beacon.uuid + ":" + beacon.major + ":" + beacon.minor);
+                $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));
+            }
+        });
  
     });
 })
