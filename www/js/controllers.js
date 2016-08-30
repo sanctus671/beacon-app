@@ -3,7 +3,7 @@ angular.module('app.controllers', [])
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform) {
     
     $rootScope.rangedBeacons = [];
-    $rootScope.inRangeBeacons = [];
+    $rootScope.inRangeBeacons = {};
     $ionicPlatform.ready(function() {
         
         $cordovaBeacon.requestWhenInUseAuthorization();
@@ -100,8 +100,13 @@ angular.module('app.controllers', [])
             var z = result.z;
             var timeStamp = result.timestamp;
             
-            if ($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3){console.log("grabbed")}
-            if (($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3) && $rootScope.inRangeBeacons.length > 0){ //TODO have condition for phone acceleration
+            if ($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3){
+                console.log("grabbed");
+                console.log($rootScope.inRangeBeacons);
+                console.log($rootScope.inRangeBeacons.length);
+                console.log(Object.keys($rootScope.inRangeBeacons).length)
+            }
+            if (($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3) && Object.keys($rootScope.inRangeBeacons).length > 0){ //TODO have condition for phone acceleration
                 console.log("hey its met");
                 
                 var beacon = {}; var proximity = false; //TODO find cloest beacon
