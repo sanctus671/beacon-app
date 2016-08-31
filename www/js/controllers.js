@@ -6,7 +6,7 @@ angular.module('app.controllers', [])
     $rootScope.inRangeBeacons = {};
     $ionicPlatform.ready(function() {
         
-        $cordovaBeacon.requestWhenInUseAuthorization();
+        if (window.cordova){$cordovaBeacon.requestWhenInUseAuthorization();}
         
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
             var uniqueBeaconKey;
@@ -20,7 +20,7 @@ angular.module('app.controllers', [])
             $rootScope.rangedBeacons = data;
             for (var index in $rootScope.rangedBeacons){
                 var beacon = $rootScope.rangedBeacons[index];
-                $cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));
+                if (window.cordova){$cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));}
             }
         });
  
@@ -33,7 +33,9 @@ angular.module('app.controllers', [])
 .controller('NotificationsCtrl', function($scope, $cordovaBeacon, $rootScope) {
     $scope.notifications = [];
     
-    
+    $scope.getNotificationsLength = function(){
+        return $scope.notifications.length + Object.keys($rootScope.inRangeBeacons).length;
+    }
     
 
     
@@ -46,13 +48,10 @@ angular.module('app.controllers', [])
 
 
 
-.controller('DragCtrl', function($scope, MainService, AuthService, $rootScope, $cordovaBeacon, $ionicModal, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaDevice) {
+.controller('DragCtrl', function($scope, MainService, AuthService, $rootScope, $cordovaBeacon, $ionicPopup, $cordovaSocialSharing, $ionicModal, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaDevice) {
     $scope.advert = {};
 
-    $scope.beacons = [];
 
-    
-    
 
     
     
@@ -66,18 +65,12 @@ angular.module('app.controllers', [])
     $scope.openAdvertModal = function(){
         $scope.advertModal.show();
     }
-    
-    //scan for beacons
-    //wait for acceleromoter motion
-    //if accelermotor condition is met, get the closest beacon and move it onto screen
-    
-    
-    
+
     
     $scope.getAdvert = function(beacon){
+        $scope.advert = {};
         MainService.getAdvert(beacon).then(function(data){
-            $scope.advert = data; //TODO display advert in modal with actions
-            //open modal
+            $scope.advert = data;
         },function(data){
             if (data.status_code === 401){
                 AuthService.register();
@@ -132,14 +125,44 @@ angular.module('app.controllers', [])
     },false);
     
  
-  
+    $scope.doAction = function(action){
+        $scope.saveRecord(action);
+        if (action === 'phone'){
+            window.open('tel:' + $scope.advert.phone, '_system')
+        }
+        else if (action === 'link'){
+            window.open($scope.advert.link, "_system");
+        }
+        else if (action === 'location'){
+            window.open("https://www.google.com/maps/place/" + $scope.advert.location, "_system");
+        }
+        else if (action === 'info'){
+            $scope.openInfoPopup();
+        }
+        else if (action === 'share'){
+            $cordovaSocialSharing
+                .share($scope.advert.name, $scope.advert.name, null, $scope.advert.image) // Share via native share sheet
+             
+        }
+    }
+    
+    $scope.openInfoPopup = function(){
+        var alertPopup = $ionicPopup.alert({
+          title: 'Information',
+          template: '<span ng-if="advert.company">Company: ' + $scope.advert.company + '<br></span>\n\
+                     <span ng-if="advert.category">Category: ' + $scope.advert.category + '<br></span>\n\
+                     ' + $scope.advert.description
+        });       
+    }
+    
+    
     
     $scope.saveRecord = function(action){ //executed when an action is made on an advert
         $cordovaGeolocation
           .getCurrentPosition({timeout: 10000, enableHighAccuracy: false})
           .then(function (position) {
-            var lat  = position.coords.latitude
-            var long = position.coords.longitude
+            var lat  = position.coords.latitude;
+            var long = position.coords.longitude;
             console.log(position);
             var uuid = $cordovaDevice.getUUID();
             var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
@@ -153,7 +176,7 @@ angular.module('app.controllers', [])
     
 })
 
-.controller('CollectionCtrl', function($scope, MainService, AuthService) {
+.controller('HistoryCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup) {
     $scope.loading = false;
     $scope.records = [];
     $scope.doRefresh = function(){  
@@ -161,7 +184,7 @@ angular.module('app.controllers', [])
         MainService.getRecords().then(function(data){
             $scope.loading = false;
             $scope.$broadcast('scroll.refreshComplete');
-            $scope.records = data;
+            //$scope.records = data;
         },function(data){
             $scope.$broadcast('scroll.refreshComplete');
             if (data.status_code === 401){
@@ -170,6 +193,63 @@ angular.module('app.controllers', [])
         })
     }
     $scope.doRefresh();   
+    
+    $scope.advert = {};
+
+    $ionicModal.fromTemplateUrl('templates/modals/advert.html', {
+        scope: $scope,
+        animation: 'fade-in-scale'
+    }).then(function(modal) {
+        $scope.advertModal = modal;
+    });    
+    
+    $scope.openAdvertModal = function(){
+        $scope.advertModal.show();
+    }
+
+    
+    $scope.getAdvert = function(beacon){
+        $scope.advert = {};
+        MainService.getAdvert(beacon).then(function(data){
+            $scope.advert = data;
+            $scope.openAdvertModal();
+        },function(data){
+            if (data.status_code === 401){
+                AuthService.register();
+            } 
+        })        
+    }    
+    
+    $scope.doAction = function(action){
+        $scope.saveRecord(action);
+        if (action === 'phone'){
+            window.open('tel:' + $scope.advert.phone, '_system')
+        }
+        else if (action === 'link'){
+            window.open($scope.advert.link, "_system");
+        }
+        else if (action === 'location'){
+            window.open("https://www.google.com/maps/place/" + $scope.advert.location, "_system");
+        }
+        else if (action === 'info'){
+            $scope.openInfoPopup();
+        }
+        else if (action === 'share'){
+            $cordovaSocialSharing
+                .share($scope.advert.name, $scope.advert.name, null, $scope.advert.image) // Share via native share sheet
+             
+        }
+    }
+    
+    $scope.openInfoPopup = function(){
+        var alertPopup = $ionicPopup.alert({
+          title: 'Information',
+          template: '<span ng-if="advert.company">Company: ' + $scope.advert.company + '<br></span>\n\
+                     <span ng-if="advert.category">Category: ' + $scope.advert.category + '<br></span>\n\
+                     ' + $scope.advert.description
+        });       
+    }    
+    
 })
 
 

@@ -1,0 +1,22 @@
+<ion-view view-title="History">
+  <ion-content>
+    <ion-refresher
+        pulling-text="Pull to refresh..."
+        on-refresh="doRefresh()">
+    </ion-refresher>        
+    <ion-list>
+      <ion-item ng-repeat="record in records">
+        <h2>{{record.advert.name}}</h2>
+        <p>You clicked the {{record.action}}</p>
+      </ion-item>
+    </ion-list>  
+      
+    <div ng-if="records.length <= 0" class="empty-container">
+        <i class="icon ion-ios-clock"></i>
+        <p>No history</p>
+    </div>      
+      
+      
+      
+  </ion-content>
+</ion-view>

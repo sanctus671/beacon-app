@@ -129,12 +129,12 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     } 
   })
   
-  .state('tab.collection', {
-    url: '/collection',
+  .state('tab.history', {
+    url: '/history',
     views: {
-      'tab-collection': {
-        templateUrl: 'templates/tab-collection.html',
-        controller: 'CollectionCtrl'
+      'tab-history': {
+        templateUrl: 'templates/tab-history.html',
+        controller: 'HistoryCtrl'
       }
     },
     data: {

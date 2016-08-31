@@ -115,7 +115,7 @@ angular.module('app.services', [])
         .success(function(data) {
             console.log(data);
                       
-            deferred.resolve(data.records);
+            deferred.resolve(data);
         })
         .error(function(data) {
             deferred.reject(data);

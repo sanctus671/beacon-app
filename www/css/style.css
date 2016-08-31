@@ -1,0 +1,83 @@
+/*general styles*/
+
+
+
+.empty-container{
+    text-align: center;
+    color: #ccc;
+    margin-top: 100px;
+}
+.empty-container i{
+    font-size: 100px;
+}
+
+.empty-container p{
+    font-size: 20px;
+    text-transform: uppercase;
+    padding: 10px;
+}
+/*notification styles*/
+
+
+
+/*drag styles */
+
+.drag-container {
+    text-align:center;
+    margin-top:80px;
+}
+
+.drag-container img{
+    max-width:50%;
+}
+
+.drag-container p{
+    font-size:16px;
+    text-transform:uppercase;
+    color:#ccc;
+    padding:10px;
+}
+.advert-action-bar{
+    padding:0px;
+}
+.advert-action-bar button{
+    width: 25%;
+    border-radius: 0px;
+}
+
+.bar.advert-action-bar > .button + .button:last-child{
+    height: 100%;
+    top: 0px;  
+    right: 0px;
+}
+
+.advert-container{
+        height: 100%;
+        text-align:center;
+}
+
+.advert-container img{
+        max-width: 100%;
+}
+
+.advert-share-button{
+position: absolute;
+    bottom: 55px;
+    right: 15px;
+    font-size: 25px;
+    text-transform: uppercase;
+    color: rgba(169, 169, 169, 0.9);
+
+}
+
+.advert-share-button.activated{
+ color:#444;   
+}
+
+.advert-page .scroll{
+    min-height:100%;
+}
+
+
+
+/*records styles */

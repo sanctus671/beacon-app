@@ -12,7 +12,12 @@
         <h2>notification.title</h2>
         <p>{{notifcation.description}}</p>
       </ion-item>        
-    </ion-list>      
+    </ion-list> 
+      
+      <div ng-if="getNotificationsLength() <= 0" class="empty-container">
+          <i class="icon ion-android-notifications"></i>
+          <p>No notifications</p>
+      </div>
       
       
       
