@@ -98,7 +98,7 @@ angular.module('app.services', [])
         .success(function(data) {
             console.log(data);
                       
-            deferred.resolve(data);
+            deferred.resolve(data.advert);
         })
         .error(function(data) {
             deferred.reject(data);
