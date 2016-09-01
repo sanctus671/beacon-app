@@ -128,7 +128,7 @@ angular.module('app.services', [])
         var deferred = $q.defer(),
             user = AuthService.getUser();
         if (!user){deferred.reject("No token");}   
-        $http.post(API_URL + "/records/store?token=" + user.token, record)
+        $http.post(API_URL + "/records?token=" + user.token, record)
         .success(function(data) {
             console.log(data);
                       
