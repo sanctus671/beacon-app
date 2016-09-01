@@ -3,7 +3,10 @@ angular.module('app.controllers', [])
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform) {
     
     $rootScope.rangedBeacons = [];
-    $rootScope.inRangeBeacons = {};
+    $rootScope.inRangeBeacons = {
+        "sdfsdfsd":{proximity:"ProximityNear"},
+        "sdfasdf" :{proximity:"ProximityImmediate"}
+        };
     $ionicPlatform.ready(function() {
         
         if (window.cordova){$cordovaBeacon.requestWhenInUseAuthorization();}
@@ -49,7 +52,16 @@ angular.module('app.controllers', [])
 
 
 .controller('DragCtrl', function($scope, MainService, AuthService, $rootScope, $cordovaBeacon, $ionicPopup, $cordovaSocialSharing, $ionicModal, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaDevice) {
-    $scope.advert = {};
+    $scope.advert = {
+        name:"McDonalds Promo",
+        image:"http://www.hokangtao.com/wp-content/uploads/2013/03/mcdonalds-promotion-2013.jpg",
+        phone:"0800234234",
+        link:"www.mcdonalds.co.nz",
+        location:"-36.8752745,174.8054547",
+        company:"McDonalds",
+        category:"Fast Food",
+        description:"This promo is limited to one per customer and is avaible until the 1st of October"
+    };
 
 
 
@@ -149,8 +161,8 @@ angular.module('app.controllers', [])
     $scope.openInfoPopup = function(){
         var alertPopup = $ionicPopup.alert({
           title: 'Information',
-          template: '<span ng-if="advert.company">Company: ' + $scope.advert.company + '<br></span>\n\
-                     <span ng-if="advert.category">Category: ' + $scope.advert.category + '<br></span>\n\
+          template: '<span ng-show="advert.company">Company: ' + $scope.advert.company + '<br></span>\n\
+                     <span ng-show="advert.category">Category: ' + $scope.advert.category + '<br></span>\n\
                      ' + $scope.advert.description
         });       
     }
@@ -178,7 +190,32 @@ angular.module('app.controllers', [])
 
 .controller('HistoryCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup) {
     $scope.loading = false;
-    $scope.records = [];
+    $scope.records = [
+        {action: "link",
+        advert_id: "2",
+        advert:{
+        name:"McDonalds Promo",
+        image:"http://www.hokangtao.com/wp-content/uploads/2013/03/mcdonalds-promotion-2013.jpg",
+        phone:"0800234234",
+        link:"www.mcdonalds.co.nz",
+        location:"-36.8752745,174.8054547",
+        company:"McDonalds",
+        category:"Fast Food",
+        description:"This promo is limited to one per customer and is avaible until the 1st of October"
+        },
+        beacon_id: "3",
+        created_at: "2016-09-01 00:55:33",
+        device: "android6",
+        device_id: "146ecdfd2f45685a",
+        id: 1,
+        ip: "114.23.127.57",
+        location: "-40.3525827, 175.6221285",
+        temperature: null,
+        updated_at: "2016-09-01 00:55:33",
+        user_id: "4"
+        }    
+    ];
+    
     $scope.doRefresh = function(){  
         $scope.loading = true;
         MainService.getRecords().then(function(data){
@@ -208,19 +245,18 @@ angular.module('app.controllers', [])
     }
 
     
-    $scope.getAdvert = function(beacon){
-        $scope.advert = {};
-        MainService.getAdvert(beacon).then(function(data){
-            $scope.advert = data;
-            $scope.openAdvertModal();
-        },function(data){
-            if (data.status_code === 401){
-                AuthService.register();
-            } 
-        })        
+    $scope.getAdvert = function(recordId){
+        $scope.advert = {};    
+        for (var index in $scope.records){
+            if ($scope.records[index].id === recordId){
+                $scope.advert = $scope.records[index].advert;
+            }
+        } 
+        $scope.openAdvertModal();
     }    
     
     $scope.doAction = function(action){
+        if (!$scope.advert.id){return;}
         $scope.saveRecord(action);
         if (action === 'phone'){
             window.open('tel:' + $scope.advert.phone, '_system')

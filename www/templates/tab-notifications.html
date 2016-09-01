@@ -9,7 +9,7 @@
         <p ng-if="beacon.proximity !== 'ProximityNear' && beacon.proximity !== 'ProximityImmediate'">Far away</p>
       </ion-item>
       <ion-item ng-repeat="notification in notifications">
-        <h2>notification.title</h2>
+        <h2>{{notification.title}}</h2>
         <p>{{notifcation.description}}</p>
       </ion-item>        
     </ion-list> 
