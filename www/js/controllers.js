@@ -3,10 +3,7 @@ angular.module('app.controllers', [])
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform) {
     
     $rootScope.rangedBeacons = [];
-    $rootScope.inRangeBeacons = {
-        "sdfsdfsd":{proximity:"ProximityNear"},
-        "sdfasdf" :{proximity:"ProximityImmediate"}
-        };
+    $rootScope.inRangeBeacons = {};
     $ionicPlatform.ready(function() {
         
         if (window.cordova){$cordovaBeacon.requestWhenInUseAuthorization();}
@@ -52,16 +49,7 @@ angular.module('app.controllers', [])
 
 
 .controller('DragCtrl', function($scope, MainService, AuthService, $rootScope, $cordovaBeacon, $ionicPopup, $cordovaSocialSharing, $ionicModal, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaDevice) {
-    $scope.advert = {
-        name:"McDonalds Promo",
-        image:"http://www.hokangtao.com/wp-content/uploads/2013/03/mcdonalds-promotion-2013.jpg",
-        phone:"0800234234",
-        link:"www.mcdonalds.co.nz",
-        location:"-36.8752745,174.8054547",
-        company:"McDonalds",
-        category:"Fast Food",
-        description:"This promo is limited to one per customer and is avaible until the 1st of October"
-    };
+    $scope.advert = {};
 
 
 
@@ -190,31 +178,7 @@ angular.module('app.controllers', [])
 
 .controller('HistoryCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup) {
     $scope.loading = false;
-    $scope.records = [
-        {action: "link",
-        advert_id: "2",
-        advert:{
-        name:"McDonalds Promo",
-        image:"http://www.hokangtao.com/wp-content/uploads/2013/03/mcdonalds-promotion-2013.jpg",
-        phone:"0800234234",
-        link:"www.mcdonalds.co.nz",
-        location:"-36.8752745,174.8054547",
-        company:"McDonalds",
-        category:"Fast Food",
-        description:"This promo is limited to one per customer and is avaible until the 1st of October"
-        },
-        beacon_id: "3",
-        created_at: "2016-09-01 00:55:33",
-        device: "android6",
-        device_id: "146ecdfd2f45685a",
-        id: 1,
-        ip: "114.23.127.57",
-        location: "-40.3525827, 175.6221285",
-        temperature: null,
-        updated_at: "2016-09-01 00:55:33",
-        user_id: "4"
-        }    
-    ];
+    $scope.records = [];
     
     $scope.doRefresh = function(){  
         $scope.loading = true;
