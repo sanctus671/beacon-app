@@ -185,7 +185,7 @@ angular.module('app.controllers', [])
         MainService.getRecords().then(function(data){
             $scope.loading = false;
             $scope.$broadcast('scroll.refreshComplete');
-            //$scope.records = data;
+            $scope.records = data;
         },function(data){
             $scope.$broadcast('scroll.refreshComplete');
             if (data.status_code === 401){
