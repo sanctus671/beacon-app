@@ -216,7 +216,9 @@ angular.module('app.controllers', [])
                 $scope.advert = $scope.records[index].advert;
             }
         } 
-        $scope.openAdvertModal();
+        if ($scope.advert.id){
+            $scope.openAdvertModal();
+        }
     }    
     
     $scope.doAction = function(action){
