@@ -141,7 +141,7 @@ angular.module('app.controllers', [])
                 console.log($rootScope.inRangeBeacons);
             }
             //differance in y is negative, differane in z is positive
-            if ((($scope.acceleration.y - y) < 0) && (($scope.acceleration.z - z) > 0) && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen){ //TODO have condition for phone acceleration
+            if ((($scope.acceleration.y - y) < -1) && (($scope.acceleration.z - z) > 0) && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen){ //TODO have condition for phone acceleration
                 console.log("hey its met");
                 
                 var beacon = {}; var proximity = false; //TODO find cloest beacon
