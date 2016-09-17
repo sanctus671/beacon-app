@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
 
-.controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform) {
+.controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform, $timeout) {
     
     $rootScope.rangedBeacons = [];
     //$rootScope.inRangeBeacons = {};
@@ -8,6 +8,17 @@ angular.module('app.controllers', [])
          "Beacon1":{proximity:"ProximityNear"},
          "Beacon2" :{proximity:"ProximityImmediate"}
          };    
+     //demo to test local notifications    
+    $timeout(function(){
+        window.plugin.notification.local.add({
+            id:         "1",  // A unique id of the notifiction
+            message:    "Open the app and drag to view",  // The message that is displayed
+            title:      "New advert in range",  // The title of the message
+            sound:      true,
+            autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
+            ongoing:    false, // Prevent clearing of notification (Android only)
+        });         
+    },10000)     
     $ionicPlatform.ready(function() {
         
         if (window.cordova){$cordovaBeacon.requestWhenInUseAuthorization();}
@@ -16,6 +27,16 @@ angular.module('app.controllers', [])
             var uniqueBeaconKey;
             for(var i = 0; i < pluginResult.beacons.length; i++) {
                 uniqueBeaconKey = pluginResult.beacons[i].uuid + ":" + pluginResult.beacons[i].major + ":" + pluginResult.beacons[i].minor;
+                if (!(uniqueBeaconKey in $scope.inRangeBeacons)){
+                    window.plugin.notification.local.add({
+                        id:         uniqueBeaconKey,  // A unique id of the notifiction
+                        message:    "Open the app and drag to view",  // The message that is displayed
+                        title:      "New advert in range",  // The title of the message
+                        sound:      true,
+                        autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
+                        ongoing:    false, // Prevent clearing of notification (Android only)
+                    });                     
+                }
                 $rootScope.inRangeBeacons[uniqueBeaconKey] = pluginResult.beacons[i];
             }
             $scope.$apply();
@@ -54,7 +75,7 @@ angular.module('app.controllers', [])
 
 .controller('DragCtrl', function($scope, MainService, AuthService, $rootScope, $cordovaBeacon, $ionicPopup, $cordovaSocialSharing, $ionicModal, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaDevice) {
     //$scope.advert = {};
-
+    $scope.modalOpen = false;
     $scope.advert = {
          name:"McDonalds Promo",
          image:"http://www.hokangtao.com/wp-content/uploads/2013/03/mcdonalds-promotion-2013.jpg",
@@ -76,8 +97,17 @@ angular.module('app.controllers', [])
     });    
     
     $scope.openAdvertModal = function(){
+        $scope.modalOpen = true;
         $scope.advertModal.show();
     }
+    
+    $scope.$on('modal.hidden', function() {
+        $scope.modalOpen = false;
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+        $scope.modalOpen = false;
+    });    
 
     
     $scope.getAdvert = function(beacon){
@@ -110,7 +140,8 @@ angular.module('app.controllers', [])
                 console.log("grabbed");
                 console.log($rootScope.inRangeBeacons);
             }
-            if (($scope.acceleration.y < 8 && y > 8 && $scope.acceleration.z > 3 && z > -3 && z < 3) && Object.keys($rootScope.inRangeBeacons).length > 0){ //TODO have condition for phone acceleration
+            //differance in y is negative, differane in z is positive
+            if ((($scope.acceleration.y - y) < 0) && (($scope.acceleration.z - z) > 0) && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen){ //TODO have condition for phone acceleration
                 console.log("hey its met");
                 
                 var beacon = {}; var proximity = false; //TODO find cloest beacon
