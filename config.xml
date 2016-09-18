@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.appsy.beaconapp" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-  <name>Beacon App</name>
+<widget id="com.appsy.grabad" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+  <name>GrabAd</name>
   <description>
         A beacon advertising app.
     </description>
-  <author email="taylor@taylorhamling.com" href="http://www.taylorhamling.com">
-      Taylor Hamling
+  <author email="support@appsy.co.nz" href="http://www.appsy.nz">
+      Appsy
     </author>
   
   
@@ -13,7 +13,7 @@
 	<preference name="phonegap-version" value="cli-6.0.0" />
 	<preference name="android-build-tool" value="gradle" /> 
     <preference name="permissions" value="none" />
-    <preference name="orientation" value="default" />
+    <preference name="orientation" value="portrait" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="false" />
     <preference name="webviewbounce" value="true" />
