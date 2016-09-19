@@ -39,8 +39,6 @@
 	<gap:plugin name="cordova-plugin-geolocation" source="npm"/>
         <gap:plugin name="cordova-plugin-device-motion" source="npm"/>
 	<gap:plugin name="com.unarin.cordova.beacon" source="npm"/>
-
-<gap:plugin name="de.appplant.cordova.plugin.local-notification" source="npm"/>	
 	<gap:plugin name="ionic-plugin-keyboard" source="npm"/>	
     <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
 	<gap:plugin name="cordova-plugin-inappbrowser" source="npm"/>	
