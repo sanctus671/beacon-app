@@ -46,7 +46,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
 
   
     $ionicPlatform.on("resume", function(){ 
-        window.plugin.notification.local.cancelAll();
+        //window.plugin.notification.local.cancelAll();
         AuthService.userIsLoggedIn().then(function(){
             
         },function(){

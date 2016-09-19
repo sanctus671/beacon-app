@@ -9,6 +9,7 @@ angular.module('app.controllers', [])
          "Beacon2" :{proximity:"ProximityImmediate"}
          };    
      //demo to test local notifications    
+     /*
     $timeout(function(){
         window.plugin.notification.local.add({
             id:         "1",  // A unique id of the notifiction
@@ -18,7 +19,8 @@ angular.module('app.controllers', [])
             autoCancel: true, // Setting this flag and the notification is automatically canceled when the user clicks it
             ongoing:    false, // Prevent clearing of notification (Android only)
         });         
-    },10000)     
+    },10000)   
+    */
     $ionicPlatform.ready(function() {
         
         if (window.cordova){$cordovaBeacon.requestWhenInUseAuthorization();}
@@ -27,6 +29,7 @@ angular.module('app.controllers', [])
             var uniqueBeaconKey;
             for(var i = 0; i < pluginResult.beacons.length; i++) {
                 uniqueBeaconKey = pluginResult.beacons[i].uuid + ":" + pluginResult.beacons[i].major + ":" + pluginResult.beacons[i].minor;
+                /*
                 if (!(uniqueBeaconKey in $scope.inRangeBeacons)){
                     window.plugin.notification.local.add({
                         id:         uniqueBeaconKey,  // A unique id of the notifiction
@@ -37,6 +40,7 @@ angular.module('app.controllers', [])
                         ongoing:    false, // Prevent clearing of notification (Android only)
                     });                     
                 }
+                */
                 $rootScope.inRangeBeacons[uniqueBeaconKey] = pluginResult.beacons[i];
             }
             $scope.$apply();
