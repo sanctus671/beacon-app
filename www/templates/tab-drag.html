@@ -1,10 +1,22 @@
 <ion-view view-title="Drag">
   <ion-content scroll="false">
       <div class="drag-container" ng-click="openAdvertModal()">
-        <img src="img/drag.png"/>
-        <p>
-            Face the advert and drag your phone towards you
-        </p>
+            <div ng-if="getBeaconCount() < 1 || loading && false">
+                <ion-spinner class="spinner-assertive"></ion-spinner><br>
+              Searching...
+            </div>          
+            <div ng-if="getBeaconCount() > 0 && !loading && stage === 1 || true">
+              <img class="stand-animation" src="img/drag.png"/>
+              <p>
+                  Hold phone up to face the advert
+              </p>
+            </div>
+            <div ng-if="getBeaconCount() > 0 && !loading && stage === 2">
+              <img class="zoom-animation" src="img/drag.png"/>
+              <p>
+                  Pull phone towards you
+              </p>
+            </div>          
       </div>
       
   </ion-content>

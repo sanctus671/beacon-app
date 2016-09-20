@@ -78,6 +78,40 @@ position: absolute;
     min-height:100%;
 }
 
+@keyframes zoomin {
+  from {
+    transform: scale(0.5);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.zoom-animation {
+  animation-duration: 1s;
+  animation-name: zoomin;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+}
+
+@keyframes standin {
+  from {
+    transform: rotateX(60deg);
+  }
+
+  to {
+    transform: rotateX(0deg);
+  }
+}
+
+.stand-animation {
+  animation-duration: 3s;
+  animation-name: standin;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+}
+
 
 
 /*records styles */
