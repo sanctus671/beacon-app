@@ -135,19 +135,21 @@ angular.module('app.controllers', [])
             var y = result.y;
             var z = result.z;
             var timeStamp = result.timestamp;
-            $scope.log(result)
-            if (y > 7 && y < 12 && $scope.stage === 1){ //check that phone is standing
+            console.log(result)
+            if (y > 8 && y < 10 && $scope.stage === 1){ //check that phone is standing
                 $scope.stage = 2;
+                console.log("entering stage 2");
             }
             
             if ($scope.stage === 2){
                 //check that phone is still standing
-                if (!(y > 7 && y < 12)){
+                if (!(y > 8 && y < 10)){
                     $scope.stage = 1;
+                    console.log("exiting stage 2");
                 } 
                 //if ((($scope.acceleration.y - y) < -1) && (($scope.acceleration.z - z) > 0) && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "app.drag"){ //differance in y is negative, differane in z is positive                
                 //check if the phone is accelerated towards the person
-                else if ((($scope.acceleration.z - z) > 0) && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "app.drag"){
+                else if (z > 1 && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "app.drag"){
                     console.log("grabbed");
 
                     var beacon = {}; var proximity = false; 
