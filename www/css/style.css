@@ -112,6 +112,10 @@ position: absolute;
   animation-direction: normal;
 }
 
+.popup-body{
+        text-align: center;
+}
+
 
 
 /*records styles */
