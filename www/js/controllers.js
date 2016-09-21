@@ -128,6 +128,7 @@ angular.module('app.controllers', [])
           null,
           function(error) {
           // An error occurred
+          $scope.loading = false;
           console.log(error);
           },
           function(result) {
