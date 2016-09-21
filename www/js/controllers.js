@@ -127,7 +127,7 @@ angular.module('app.controllers', [])
     $scope.acceleration = {};
     $scope.speed = {};
     document.addEventListener("deviceready", function(){
-        var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 1000 });
+        var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 100 });
         watch.then(
           null,
           function(error) {
