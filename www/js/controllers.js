@@ -184,10 +184,10 @@ angular.module('app.controllers', [])
             }
             $scope.acceleration = result;
         });
-        var gyroscope = $deviceGyroscope.watch();
-        gyroscope.then(function(data){
+        var gyroscope = $deviceGyroscope.watch(function(data){
             console.log(data);
-        })
+        });
+        console.log(gyroscope);
         
         
     },false);
