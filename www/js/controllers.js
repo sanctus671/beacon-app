@@ -45,12 +45,16 @@ angular.module('app.controllers', [])
             }
             $scope.$apply();
         });
-        MainService.getBeacons().then(function(data){
-            $rootScope.rangedBeacons = data;
-            for (var index in $rootScope.rangedBeacons){
-                var beacon = $rootScope.rangedBeacons[index];
-                if (window.cordova){$cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));}
-            }
+        
+        $rootScope.$on("userRegistered", function(){
+            console.log("test");
+            MainService.getBeacons().then(function(data){
+                $rootScope.rangedBeacons = data;
+                for (var index in $rootScope.rangedBeacons){
+                    var beacon = $rootScope.rangedBeacons[index];
+                    if (window.cordova){$cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));}
+                }
+            });
         });
  
     });

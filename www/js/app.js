@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config', 'ngCordova'])
 
-.run(function($ionicPlatform, $rootScope, AuthService) {
+.run(function($ionicPlatform, $rootScope, AuthService, $timeout) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -25,10 +25,14 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
 
     AuthService.userIsLoggedIn().then(function(response){
         console.log(response);
+        $timeout(function(){$rootScope.$broadcast("userRegistered");});
 
     },function(response){
         //reregister user
-        AuthService.register();
+        AuthService.register().then(function(){
+            console.log("response");
+            $timeout(function(){$rootScope.$broadcast("userRegistered");});
+        });
     });    
     
     
@@ -48,10 +52,15 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     $ionicPlatform.on("resume", function(){ 
         //window.plugin.notification.local.cancelAll();
         AuthService.userIsLoggedIn().then(function(){
+            console.log("response");
+            $timeout(function(){$rootScope.$broadcast("userRegistered");});
             
         },function(){
             //reregister user
-            AuthService.register();
+            AuthService.register().then(function(){
+                console.log("response");
+                $timeout(function(){$rootScope.$broadcast("userRegistered");});
+            });
         });
     });    
     
@@ -63,10 +72,14 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){ // UI Router Authentication Check
       if (toState.data.authenticate){
           AuthService.userIsLoggedIn().then(function(response){
-              
+              console.log("response");
+              $timeout(function(){$rootScope.$broadcast("userRegistered");});
           },function(){
               //reregister user
-              AuthService.register();
+              AuthService.register().then(function(){
+                console.log("response");
+                $timeout(function(){$rootScope.$broadcast("userRegistered");});
+            });
           });
       }
 

@@ -1,7 +1,7 @@
 angular.module('app.services', [])
 
 
-.service('AuthService', function($http, $q, API_URL) {
+.service('AuthService', function($http, $q, API_URL, $rootScope) {
     this.register = function(){
         var deferred = $q.defer(),
             AuthService = this;
@@ -58,7 +58,7 @@ angular.module('app.services', [])
     this.getBeacons = function(){
         var deferred = $q.defer(),
             user = AuthService.getUser();
-        if (!user){deferred.reject("No token");}   
+        if (!user || !user.token){deferred.reject("No token");}   
         $http.get(API_URL + "/beaconsapp?token=" + user.token)
         .success(function(data) {
             console.log(data);
