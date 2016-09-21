@@ -186,7 +186,7 @@ angular.module('app.controllers', [])
         });
         var gyroscope = $deviceGyroscope.watch({ frequency: 1000 });
         console.log(gyroscope);
-        gyroscope.then(function(data){
+        gyroscope.then(null,function(data){
             console.log("here");
             console.log(data);
         },function(data){
