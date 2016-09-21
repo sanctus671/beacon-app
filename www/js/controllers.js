@@ -153,7 +153,7 @@ angular.module('app.controllers', [])
             $scope.acceleration = result;
         });
         
-        var gyroscope = $deviceGyroscope.watch({ frequency: 1000 });
+        var gyroscope = $deviceGyroscope.watch({ frequency: 100 });
         gyroscope.then(
             null,
             function(error){
