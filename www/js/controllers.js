@@ -125,7 +125,7 @@ angular.module('app.controllers', [])
         })        
     }
     $scope.acceleration = {};
-    // watch Acceleration
+    $scope.speed = {};
     document.addEventListener("deviceready", function(){
         var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 1000 });
         watch.then(
@@ -140,30 +140,34 @@ angular.module('app.controllers', [])
             var x = result.x;
             var y = result.y;
             var z = result.z;
-            var timeStamp = result.timestamp;
-            //console.log(result)
             if (y > 6 && y < 12 && $scope.stage === 1){ //check that phone is standing
                 $scope.stage = 2;
-                console.log("entering stage 2");
-                $scope.pullCount = 0;
             }
             
             else if ($scope.stage === 2){
                 //check that phone is still standing
-                $scope.pullCount +=1
-                if (!(y > 8 && y < 10)){
+                if (!(y > 6)){
                     $scope.stage = 1;
-                    console.log("exiting stage 2");
-                    $scope.pullCount = 0;
                 } 
-                //if ((($scope.acceleration.y - y) < -1) && (($scope.acceleration.z - z) > 0) && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "app.drag"){ //differance in y is negative, differane in z is positive                
-                //check if the phone is accelerated towards the person
-                else if ($scope.pullCount > 3 && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
+            }
+            $scope.acceleration = result;
+        });
+        
+        var gyroscope = $deviceGyroscope.watch({ frequency: 1000 });
+        gyroscope.then(
+            null,
+            function(error){
+                console.log(error);
+            },
+            function(result){
+                var x = result.x;
+                var y = result.y;
+                var z = result.z;
+                var isMoving = x > 1 || x < -1 || y > 1 || y < -1 || z > 1 || z < -1;
+                if ($scope.stage === 2 && $scope.acceleration.y > 6 && isMoving && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
                     console.log("grabbed");
-                    $scope.pullCount = 0;
                     var beacon = {}; var proximity = false; 
                     for (var index in $rootScope.inRangeBeacons){
-                        console.log($rootScope.inRangeBeacons[index]);
                         if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate"){
                             beacon = $rootScope.inRangeBeacons[index];
                             proximity = "ProximityImmediate";
@@ -177,22 +181,12 @@ angular.module('app.controllers', [])
                             beacon = $rootScope.inRangeBeacons[index];
                         }
                     }
-                    console.log(beacon);
                     $scope.getAdvert(beacon);
                     $scope.advertModal.show();                
-                }
-            }
-            $scope.acceleration = result;
-        });
-        var gyroscope = $deviceGyroscope.watch({ frequency: 1000 });
-        console.log(gyroscope);
-        gyroscope.then(null,function(data){
-            console.log("here");
-            console.log(data);
-        },function(data){
-            console.log("here");
-            console.log(data);
-        })
+                } 
+                $scope.speed = result;
+            
+            })
         
         
     },false);
