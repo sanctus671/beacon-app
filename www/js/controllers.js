@@ -81,7 +81,7 @@ angular.module('app.controllers', [])
 
 
 
-.controller('DragCtrl', function($scope, MainService, AuthService, $rootScope, $cordovaBeacon, $ionicPopup, $cordovaSocialSharing, $ionicModal, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaDevice, $state) {
+.controller('DragCtrl', function($scope, MainService, AuthService, $rootScope, $cordovaBeacon, $deviceGyroscope, $ionicPopup, $cordovaSocialSharing, $ionicModal, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaDevice, $state) {
 
     $scope.modalOpen = false;
     $scope.advert = {};
@@ -184,6 +184,12 @@ angular.module('app.controllers', [])
             }
             $scope.acceleration = result;
         });
+        var gyroscope = $deviceGyroscope.watch();
+        gyroscope.then(function(data){
+            console.log(data);
+        })
+        
+        
     },false);
     
  
