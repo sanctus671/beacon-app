@@ -41,10 +41,11 @@
 		<gap:plugin name="cordova-plugin-gyroscope" source="npm"/>
 	<gap:plugin name="com.unarin.cordova.beacon" source="npm"/>
 	<gap:plugin name="ionic-plugin-keyboard" source="npm"/>	
-    <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
 	<gap:plugin name="cordova-plugin-inappbrowser" source="npm"/>	
 
-
+	<gap:plugin name="cordova-plugin-whitelist" source="npm"/>		
+	
+	<gap:plugin name="cordova-plugin-device" source="npm"/>
 	
     <icon gap:platform="android" gap:qualifier="ldpi" src="resources/icon/android/icon-36-ldpi.png" />
     <icon gap:platform="android" gap:qualifier="mdpi" src="resources/icon/android/icon-48-mdpi.png" />
