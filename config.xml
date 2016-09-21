@@ -37,7 +37,7 @@
 	
 
 	<gap:plugin name="cordova-plugin-geolocation" source="npm"/>
-        <gap:plugin name="cordova-plugin-device-motion" source="npm"/>
+        <gap:plugin name="cordova-plugin-device-motion" source="npm" version="1.2.1"/>
 	<gap:plugin name="com.unarin.cordova.beacon" source="npm"/>
 	<gap:plugin name="ionic-plugin-keyboard" source="npm"/>	
     <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
