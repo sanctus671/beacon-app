@@ -147,7 +147,7 @@ angular.module('app.controllers', [])
             
             else if ($scope.stage === 2){
                 //check that phone is still standing
-                if (!(y > 6.5)){
+                if (!(y > 6)){
                     $scope.stage = 1;
                 } 
             }
@@ -164,8 +164,8 @@ angular.module('app.controllers', [])
                 var x = result.x;
                 var y = result.y;
                 var z = result.z;
-                var isMoving = x > 3 || y > 3 || z > 3;
-                if ($scope.stage === 2 && $scope.acceleration.y > 6.5 && isMoving && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
+                var isMoving = x > 2.5 || y > 2.5 || z > 2.5;
+                if ($scope.stage === 2 && $scope.acceleration.y > 6 && isMoving && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
                     console.log(result);
                     console.log("grabbed");
                     var beacon = {}; var proximity = false; 
