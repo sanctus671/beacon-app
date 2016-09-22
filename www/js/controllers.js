@@ -155,7 +155,7 @@ angular.module('app.controllers', [])
                 var y = result.y;
                 var z = result.z;
                 var isMoving = x > 2.5 || y > 2.5 || z > 2.5;
-                if (isMoving && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
+                if ($scope.acceleration.y > 7 && isMoving && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
                     console.log(result);
                     console.log("grabbed");
                     var beacon = {}; var proximity = false; 
