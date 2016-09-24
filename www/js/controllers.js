@@ -112,13 +112,13 @@ angular.module('app.controllers', [])
     
     $scope.$on('modal.hidden', function() {
         $scope.modalOpen = false;
-        screen.lockOrientation('landscape');
+        screen.lockOrientation('portait');
         
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function() {
         $scope.modalOpen = false;
-        screen.lockOrientation('landscape');
+        screen.lockOrientation('portait');
     });    
     
     $scope.getBeaconCount = function(){

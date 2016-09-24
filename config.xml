@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.appsy.grabad" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.appsy.grabad" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android = "http://schemas.android.com/apk/res/android">
+    <gap:config-file platform="android" parent="/manifest">
+            <application android:theme="@android:style/Theme.Holo.Light.NoActionBar"></application>		
+    </gap:config-file>	    
+    
   <name>GrabAd</name>
   <description>
         A beacon advertising app.
@@ -21,7 +25,6 @@
     <preference name="ios-statusbarstyle" value="black-opaque" />
     <preference name="detect-data-types" value="true" />
     <preference name="exit-on-suspend" value="false" />
-	<preference name="loadUrlTimeoutValue" value="700000" />
 	
 
     <preference name="disable-cursor" value="false" />
@@ -30,8 +33,6 @@
     
 	<preference name="SplashScreen" value="resources/splash.png" />
 	<preference name="AutoHideSplashScreen" value="true" />
-	<preference name="FadeSplashScreen" value="true"/>
-	<preference name="FadeSplashScreenDuration" value="500"/>
 	<preference name="SplashMaintainAspectRatio" value="true" />
 	<preference name="SplashShowOnlyFirstTime" value="true" />
 	<preference name="SplashScreenBackgroundColor" value="white" />
