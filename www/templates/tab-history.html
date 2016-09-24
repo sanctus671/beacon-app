@@ -5,9 +5,10 @@
         on-refresh="doRefresh()">
     </ion-refresher>        
     <ion-list>
-      <ion-item ng-repeat="record in records" ng-click="getAdvert(record.id)">
-        <h2>{{record.advert.name}}</h2>
-        <p>You clicked the {{record.action}}</p>
+      <ion-item ng-repeat="record in records" ng-click="getAdvert(record.id)" class="item-thumbnail-left">
+            <img ng-src="{{record.advert.image}}">
+          <h2>{{record.advert.name}}</h2>
+        <p>You engaged with this advert</p>
       </ion-item>
     </ion-list>  
     <div ng-if="records.length <= 0" class="empty-container">

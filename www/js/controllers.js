@@ -23,7 +23,10 @@ angular.module('app.controllers', [])
     */
     $ionicPlatform.ready(function() {
         
-        if (window.cordova){$cordovaBeacon.requestWhenInUseAuthorization();}
+        if (window.cordova){
+            $cordovaBeacon.requestWhenInUseAuthorization();
+            screen.lockOrientation('portait');
+        }
         
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
             var uniqueBeaconKey;
@@ -98,15 +101,24 @@ angular.module('app.controllers', [])
     
     $scope.openAdvertModal = function(){
         $scope.modalOpen = true;
+        
+        screen.unlockOrientation();
         $scope.advertModal.show();
     }
     
+    $rootScope.$on("closeAdvert",function(){
+        $scope.advertModal.hide();
+    })
+    
     $scope.$on('modal.hidden', function() {
         $scope.modalOpen = false;
+        screen.lockOrientation('landscape');
+        
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function() {
         $scope.modalOpen = false;
+        screen.lockOrientation('landscape');
     });    
     
     $scope.getBeaconCount = function(){
@@ -128,6 +140,7 @@ angular.module('app.controllers', [])
     $scope.acceleration = {};
     $scope.speed = {};
     document.addEventListener("deviceready", function(){
+        
         var watch = $cordovaDeviceMotion.watchAcceleration({ frequency: 100 });
         watch.then(
           null,
@@ -154,7 +167,7 @@ angular.module('app.controllers', [])
                 var x = result.x;
                 var y = result.y;
                 var z = result.z;
-                var isMoving = x > 3 || x < -3 || y > 3 || z > 3 || z < -3;
+                var isMoving = x > 4 || x < -4 || y > 4 || z > 4 || z < -4;
                 if ($scope.acceleration.y > 4 && isMoving && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
                     console.log(result);
                     console.log("grabbed");
@@ -254,7 +267,7 @@ angular.module('app.controllers', [])
 .controller('HistoryCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup, $cordovaGeolocation, $cordovaDevice, $rootScope) {
     $scope.loading = false;
     $scope.records = [];
-    
+    $scope.recordAdvertIds = [];
     $scope.records = [];    
     
     $scope.doRefresh = function(){  
@@ -262,7 +275,14 @@ angular.module('app.controllers', [])
         MainService.getRecords().then(function(data){
             $scope.loading = false;
             $scope.$broadcast('scroll.refreshComplete');
-            $scope.records = data;
+            $scope.recordAdvertIds = [];
+            $scope.records = data.filter(function(value){
+                if ($scope.recordAdvertIds.indexOf(value.advert.id) > -1){
+                    $scope.recordAdvertIds.push(value.advert.id);
+                    return true;
+                }
+                return false;
+            });
         },function(data){
             $scope.$broadcast('scroll.refreshComplete');
             if (data.status_code === 401){
