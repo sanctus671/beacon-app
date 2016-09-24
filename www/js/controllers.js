@@ -25,7 +25,7 @@ angular.module('app.controllers', [])
         
         if (window.cordova){
             $cordovaBeacon.requestWhenInUseAuthorization();
-            screen.lockOrientation('portait');
+            screen.lockOrientation('portrait');
         }
         
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
@@ -112,13 +112,13 @@ angular.module('app.controllers', [])
     
     $scope.$on('modal.hidden', function() {
         $scope.modalOpen = false;
-        screen.lockOrientation('portait');
+        screen.lockOrientation('portrait');
         
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function() {
         $scope.modalOpen = false;
-        screen.lockOrientation('portait');
+        screen.lockOrientation('portrait');
     });    
     
     $scope.getBeaconCount = function(){
@@ -278,7 +278,7 @@ angular.module('app.controllers', [])
             $scope.recordAdvertIds = [];
             $scope.records = data.filter(function(value){
                 console.log(value);console.log($scope.recordAdvertIds);
-                if ($scope.recordAdvertIds.indexOf(value.advert_id) > -1){
+                if ($scope.recordAdvertIds.indexOf(value.advert_id) < 0){
                     $scope.recordAdvertIds.push(value.advert_id);
                     return true;
                 }
