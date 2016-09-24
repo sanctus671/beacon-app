@@ -1,7 +1,7 @@
 <ion-view view-title="Drag">
   <ion-content scroll="false">
       <div class="drag-container">
-            <div ng-if="getBeaconCount() < 1 || loading && false">
+            <div ng-if="getBeaconCount() < 1 || loading">
                 <ion-spinner class="spinner-assertive"></ion-spinner><br>
               Searching...
             </div>          
@@ -11,7 +11,7 @@
                   Hold your phone up
               </p>
             </div>
-            <div ng-if="getBeaconCount() > 0 && !loading && stage === 2 || true">
+            <div ng-if="getBeaconCount() > 0 && !loading && stage === 2">
               <img src="img/drag2.png"/>
               <p>
                   Drag phone towards you
