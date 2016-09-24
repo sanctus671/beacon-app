@@ -277,8 +277,9 @@ angular.module('app.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.recordAdvertIds = [];
             $scope.records = data.filter(function(value){
-                if ($scope.recordAdvertIds.indexOf(value.advert.id) > -1){
-                    $scope.recordAdvertIds.push(value.advert.id);
+                console.log(value);console.log($scope.recordAdvertIds);
+                if ($scope.recordAdvertIds.indexOf(value.advert_id) > -1){
+                    $scope.recordAdvertIds.push(value.advert_id);
                     return true;
                 }
                 return false;
