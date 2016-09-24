@@ -21,6 +21,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
       StatusBar.styleDefault();
     }
     
+    if(navigator && navigator.splashscreen) {$timeout(function(){navigator.splashscreen.hide();})}
+    
     $rootScope.devicePlatform = ionic.Platform.platform();
 
     AuthService.userIsLoggedIn().then(function(response){
