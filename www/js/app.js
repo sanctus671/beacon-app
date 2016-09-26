@@ -26,13 +26,11 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     $rootScope.devicePlatform = ionic.Platform.platform();
 
     AuthService.userIsLoggedIn().then(function(response){
-        console.log(response);
         $timeout(function(){$rootScope.$broadcast("userRegistered");});
 
     },function(response){
         //reregister user
         AuthService.register().then(function(){
-            console.log("response");
             $timeout(function(){$rootScope.$broadcast("userRegistered");});
         });
     });    
@@ -41,12 +39,11 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.locationManager) {
         cordova.plugins.locationManager.isBluetoothEnabled()
             .then(function(isEnabled){
-                console.log("isEnabled: " + isEnabled);
                 if (!isEnabled) {
                     cordova.plugins.locationManager.enableBluetooth();        
                 }
             })
-            .fail(function(e) { console.error(e); })
+            .fail(function(e) {  })
             .done();   
     }
 
@@ -54,13 +51,11 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     $ionicPlatform.on("resume", function(){ 
         //window.plugin.notification.local.cancelAll();
         AuthService.userIsLoggedIn().then(function(){
-            console.log("response");
             $timeout(function(){$rootScope.$broadcast("userRegistered");});
             
         },function(){
             //reregister user
             AuthService.register().then(function(){
-                console.log("response");
                 $timeout(function(){$rootScope.$broadcast("userRegistered");});
             });
         });
@@ -76,12 +71,10 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){ // UI Router Authentication Check
       if (toState.data.authenticate){
           AuthService.userIsLoggedIn().then(function(response){
-              console.log("response");
               $timeout(function(){$rootScope.$broadcast("userRegistered");});
           },function(){
               //reregister user
               AuthService.register().then(function(){
-                console.log("response");
                 $timeout(function(){$rootScope.$broadcast("userRegistered");});
             });
           });
@@ -176,7 +169,6 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
 
 function handleOpenURL(url) {
   setTimeout(function() {
-      console.log(url);
     window.localStorage.external_load = url;
   }, 0);
 }

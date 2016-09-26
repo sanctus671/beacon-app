@@ -3,11 +3,7 @@ angular.module('app.controllers', [])
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform, $timeout) {
     
     $rootScope.rangedBeacons = [];
-    //$rootScope.inRangeBeacons = {};
-    $rootScope.inRangeBeacons = {
-         "Beacon1":{proximity:"ProximityNear", uuid:"b9407f30-f5f8-466e-aff9-25556b57fe6d", major:"46387", minor:"36404"},
-         "Beacon2" :{proximity:"ProximityImmediate", uuid:"b9407f30-f5f8-466e-aff9-25556b57fe6d", major:"46387", minor:"36404"}
-         };    
+    $rootScope.inRangeBeacons = {};  
      //demo to test local notifications    
      /*
     $timeout(function(){
@@ -50,7 +46,6 @@ angular.module('app.controllers', [])
         });
         
         $rootScope.$on("userRegistered", function(){
-            console.log("test");
             MainService.getBeacons().then(function(data){
                 $rootScope.rangedBeacons = data;
                 for (var index in $rootScope.rangedBeacons){
@@ -114,8 +109,6 @@ angular.module('app.controllers', [])
     $timeout(function(){
         if (window.localStorage.external_load !== null && window.localStorage.external_load !=="null"){
             var url = window.localStorage.external_load;
-            console.log(url);
-            //grabad://2727/
             var advertId = url.replace(/\//g, "").split(":")[1];
 
             $scope.openAdvertModal();
@@ -157,6 +150,7 @@ angular.module('app.controllers', [])
         $scope.advert = {};
         MainService.getAdvert(beacon).then(function(data){
             $scope.advert = data;
+            
         },function(data){
             if (data.status_code === 401){
                 AuthService.register();
@@ -173,7 +167,6 @@ angular.module('app.controllers', [])
           function(error) {
           // An error occurred
           $scope.loading = false;
-          console.log(error);
           },
           function(result) {
             $scope.loading = false;
@@ -187,7 +180,6 @@ angular.module('app.controllers', [])
         gyroscope.then(
             null,
             function(error){
-                console.log(error);
             },
             function(result){
                 var x = result.x;
@@ -195,8 +187,7 @@ angular.module('app.controllers', [])
                 var z = result.z;
                 var isMoving = x > 4 || x < -4 || y > 4 || z > 4 || z < -4;
                 if ($scope.acceleration.y > 4 && isMoving && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
-                    console.log(result);
-                    console.log("grabbed");
+
                     var beacon = {}; var proximity = false; 
                     for (var index in $rootScope.inRangeBeacons){
                         if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate"){
@@ -286,7 +277,6 @@ angular.module('app.controllers', [])
           .then(function (position) {
             var lat  = position.coords.latitude;
             var long = position.coords.longitude;
-            console.log(position);
             var uuid = $cordovaDevice.getUUID();
             var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
             MainService.saveRecord(record);
@@ -312,7 +302,6 @@ angular.module('app.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.recordAdvertIds = [];
             $scope.records = data.filter(function(value){
-                console.log(value);console.log($scope.recordAdvertIds);
                 if ($scope.recordAdvertIds.indexOf(value.advert_id) < 0){
                     $scope.recordAdvertIds.push(value.advert_id);
                     return true;
@@ -434,7 +423,6 @@ angular.module('app.controllers', [])
           .then(function (position) {
             var lat  = position.coords.latitude;
             var long = position.coords.longitude;
-            console.log(position);
             var uuid = $cordovaDevice.getUUID();
             var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
             MainService.saveRecord(record);

@@ -7,7 +7,6 @@ angular.module('app.services', [])
             AuthService = this;
         $http.post(API_URL + "/auth/signup")
         .success(function(data) {
-            console.log(data);
             AuthService.saveUser(data);            
             deferred.resolve(data);
         })
@@ -61,7 +60,6 @@ angular.module('app.services', [])
         if (!user || !user.token){deferred.reject("No token");}   
         $http.get(API_URL + "/beaconsapp?token=" + user.token)
         .success(function(data) {
-            console.log(data);
                       
             deferred.resolve(data.beacons);
         })
@@ -79,7 +77,6 @@ angular.module('app.services', [])
         if (!user){deferred.reject("No token");}   
         $http.get(API_URL + "/adverts?token=" + user.token)
         .success(function(data) {
-            console.log(data);
                       
             deferred.resolve(data.adverts);
         })
@@ -96,7 +93,6 @@ angular.module('app.services', [])
         if (!user){deferred.reject("No token");}   
         $http.get(API_URL + "/advertsapp?token=" + user.token + "&uuid=" + beacon.uuid + "&major=" + beacon.major + "&minor=" + beacon.minor)
         .success(function(data) {
-            console.log(data);
                       
             deferred.resolve(data.advert);
         })
@@ -113,7 +109,6 @@ angular.module('app.services', [])
         if (!user){deferred.reject("No token");}   
         $http.get(API_URL + "/adverts/" + id + "?token=" + user.token)
         .success(function(data) {
-            console.log(data);
                       
             deferred.resolve(data.advert);
         })
@@ -130,7 +125,6 @@ angular.module('app.services', [])
         if (!user){deferred.reject("No token");}   
         $http.get(API_URL + "/records?token=" + user.token)
         .success(function(data) {
-            console.log(data);
                       
             deferred.resolve(data.records ? data.records : data);
         })
@@ -147,7 +141,6 @@ angular.module('app.services', [])
         if (!user){deferred.reject("No token");}   
         $http.post(API_URL + "/records?token=" + user.token, record)
         .success(function(data) {
-            console.log(data);
                       
             deferred.resolve(data);
         })
