@@ -176,6 +176,6 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
 
 function handleOpenURL(url) {
   setTimeout(function() {
-    console.log(url);
+    window.localStorage.external_load = url;
   }, 0);
 }

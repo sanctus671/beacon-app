@@ -107,6 +107,23 @@ angular.module('app.services', [])
         return deferred.promise;        
     };    
     
+    this.getAdvertById = function(id){
+        var deferred = $q.defer(),
+            user = AuthService.getUser();
+        if (!user){deferred.reject("No token");}   
+        $http.get(API_URL + "/adverts/" + id + "?token=" + user.token)
+        .success(function(data) {
+            console.log(data);
+                      
+            deferred.resolve(data.advert);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;        
+    };     
+    
     this.getRecords = function(){
         var deferred = $q.defer(),
             user = AuthService.getUser();
