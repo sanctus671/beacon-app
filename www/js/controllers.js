@@ -106,9 +106,8 @@ angular.module('app.controllers', [])
     $scope.openAdvertModal = function(){
         $scope.modalOpen = true;
         
-        
+        screen.unlockOrientation();
         $scope.advertModal.show();
-        $timeout(function(){screen.unlockOrientation();});
     }
     
     $rootScope.$on("closeAdvert",function(){
@@ -192,7 +191,7 @@ angular.module('app.controllers', [])
                         }
                     }
                     $scope.getAdvert(beacon);
-                    $scope.advertModal.show();                
+                    $scope.openAdvertModal();              
                 } 
                 $scope.speed = result;
             
