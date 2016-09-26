@@ -42,7 +42,9 @@
 	<preference name="ShowSplashScreenSpinner" value="false"/>
     <gap:plugin name="cordova-plugin-splashscreen" source="npm"/>    
     
-    
+    <gap:plugin name="cordova-plugin-customurlscheme" source="npm">
+      <param name="URL_SCHEME" value="grabad" />
+    </gap:plugin>    
 
     <gap:plugin name="cordova-plugin-network-information" source="npm"/>
 
@@ -132,6 +134,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-intent href="grabad:*" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>

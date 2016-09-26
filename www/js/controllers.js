@@ -230,7 +230,7 @@ angular.module('app.controllers', [])
         }
         else if (action === 'share'){
             $cordovaSocialSharing
-                .share($scope.advert.name, $scope.advert.name, null, $scope.advert.image) // Share via native share sheet
+                .share($scope.advert.name, $scope.advert.name, null, "http://gaapp.appsy.nz/link/" + $scope.advert.id) // Share via native share sheet
              
         }
     }
@@ -380,7 +380,7 @@ angular.module('app.controllers', [])
         }
         else if (action === 'share'){
             $cordovaSocialSharing
-                .share($scope.advert.name, $scope.advert.name, null, $scope.advert.image) // Share via native share sheet
+                .share($scope.advert.name, $scope.advert.name, null, "http://gaapp.appsy.nz/link/" + $scope.advert.id) // Share via native share sheet
              
         }
     }

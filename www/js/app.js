@@ -171,3 +171,11 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
   $urlRouterProvider.otherwise('/tab/drag');
 
 });
+
+
+
+function handleOpenURL(url) {
+  setTimeout(function() {
+    console.log(url);
+  }, 0);
+}
