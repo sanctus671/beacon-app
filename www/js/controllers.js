@@ -211,7 +211,16 @@ angular.module('app.controllers', [])
             window.open('tel:' + $scope.advert.phone, '_system')
         }
         else if (action === 'link'){
-            window.open($scope.advert.link, "_system");
+            if ($scope.advert.link_timeout > 0){
+                $scope.loadingLink = true;
+                $timeout(function(){
+                    $scope.loadingLink = false;
+                    window.open($scope.advert.link, "_system");
+                },$scope.advert.link_timeout*1000);
+            }
+            else{
+                window.open($scope.advert.link, "_system");
+            }
         }
         else if (action === 'location'){
             window.open("https://www.google.com/maps/place/" + $scope.advert.location, "_system");
@@ -295,7 +304,12 @@ angular.module('app.controllers', [])
             } 
         })
     }
-    $scope.doRefresh();   
+
+    $scope.$on("$ionicView.afterEnter", function(event, data){
+       $scope.doRefresh();
+    });    
+    
+    
     
     $scope.advert = {};
 
@@ -347,7 +361,16 @@ angular.module('app.controllers', [])
             window.open('tel:' + $scope.advert.phone, '_system')
         }
         else if (action === 'link'){
-            window.open($scope.advert.link, "_system");
+            if ($scope.advert.link_timeout > 0){
+                $scope.loadingLink = true;
+                $timeout(function(){
+                    $scope.loadingLink = false;
+                    window.open($scope.advert.link, "_system");
+                },$scope.advert.link_timeout*1000);
+            }
+            else{
+                window.open($scope.advert.link, "_system");
+            }
         }
         else if (action === 'location'){
             window.open("https://www.google.com/maps/place/" + $scope.advert.location, "_system");

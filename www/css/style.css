@@ -70,6 +70,13 @@ position: absolute;
 
 }
 
+.advert-link-load{
+    position: absolute;
+    left: 10px;
+    bottom: 55px;
+    color: rgba(169, 169, 169, 0.9);
+}
+
 .advert-share-button.activated{
  color:#444;   
 }
