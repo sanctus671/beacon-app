@@ -112,7 +112,7 @@ angular.module('app.controllers', [])
     }
     
     $timeout(function(){
-        if (window.localStorage.external_load !== null){
+        if (window.localStorage.external_load !== null && window.localStorage.external_load !=="null"){
             var url = window.localStorage.external_load;
             console.log(url);
             //grabad://2727/
