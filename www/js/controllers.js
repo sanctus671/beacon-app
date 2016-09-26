@@ -102,25 +102,7 @@ angular.module('app.controllers', [])
     }).then(function(modal) {
         $scope.advertModal = modal;
     });    
-    
-    if (window.localStorage.external_load){
-        var url = window.localStorage.external_load;
-        console.log(url);
-        //grabad://2727/
-        var advertId = url.replace(/\//g, "").split(":")[1];
 
-        $scope.openAdvertModal();
-        $scope.modalOpen = true;
-        $scope.advert = {};
-        MainService.getAdvertById(advertId).then(function(data){
-            $scope.advert = data;
-        },function(data){
-            if (data.status_code === 401){
-                AuthService.register();
-            } 
-        })              
-        window.localStorage.external_load = null;
-    }
     
     $scope.openAdvertModal = function(){
         $scope.modalOpen = true;
@@ -128,6 +110,27 @@ angular.module('app.controllers', [])
         screen.unlockOrientation();
         $scope.advertModal.show();
     }
+    
+    $timeout(function(){
+        if (window.localStorage.external_load){
+            var url = window.localStorage.external_load;
+            console.log(url);
+            //grabad://2727/
+            var advertId = url.replace(/\//g, "").split(":")[1];
+
+            $scope.openAdvertModal();
+            $scope.advert = {};
+            MainService.getAdvertById(advertId).then(function(data){
+                $scope.advert = data;
+            },function(data){
+                if (data.status_code === 401){
+                    AuthService.register();
+                } 
+            })              
+            window.localStorage.external_load = null;
+        }
+    },1000);    
+    
     
     $rootScope.$on("closeAdvert",function(){
         $scope.advertModal.hide();
