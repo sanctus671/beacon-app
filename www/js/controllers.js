@@ -26,6 +26,7 @@ angular.module('app.controllers', [])
         
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
             var uniqueBeaconKey;
+            console.log(pluginResult);
             for(var i = 0; i < pluginResult.beacons.length; i++) {
                 uniqueBeaconKey = pluginResult.beacons[i].uuid + ":" + pluginResult.beacons[i].major + ":" + pluginResult.beacons[i].minor;
                 /*
@@ -48,6 +49,7 @@ angular.module('app.controllers', [])
         $rootScope.$on("userRegistered", function(){
             MainService.getBeacons().then(function(data){
                 $rootScope.rangedBeacons = data;
+                console.log($rootScope.rangedBeacons);
                 for (var index in $rootScope.rangedBeacons){
                     var beacon = $rootScope.rangedBeacons[index];
                     if (window.cordova){$cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));}
@@ -221,6 +223,7 @@ angular.module('app.controllers', [])
         }        
         $scope.saveRecord(action);
         if (action === 'phone'){
+            $rootScope.keepAdvertOpen = true;
             window.open('tel:' + $scope.advert.phone, '_system')
         }
         else if (action === 'link'){
@@ -228,20 +231,24 @@ angular.module('app.controllers', [])
                 $scope.loadingLink = true;
                 $timeout(function(){
                     $scope.loadingLink = false;
+                    $rootScope.keepAdvertOpen = true;
                     window.open($scope.advert.link, "_system");
                 },$scope.advert.link_timeout*1000);
             }
             else{
+                $rootScope.keepAdvertOpen = true;
                 window.open($scope.advert.link, "_system");
             }
         }
         else if (action === 'location'){
+            $rootScope.keepAdvertOpen = true;
             window.open("https://www.google.com/maps/place/" + $scope.advert.location, "_system");
         }
         else if (action === 'info'){
             $scope.openInfoPopup();
         }
         else if (action === 'share'){
+            $rootScope.keepAdvertOpen = true;
             $cordovaSocialSharing
                 .share($scope.advert.name, $scope.advert.name, null, "http://gaapp.appsy.nz/link/" + $scope.advert.id) // Share via native share sheet
              
@@ -369,6 +376,7 @@ angular.module('app.controllers', [])
         }        
         $scope.saveRecord(action);
         if (action === 'phone'){
+            $rootScope.keepAdvertOpen = true;
             window.open('tel:' + $scope.advert.phone, '_system')
         }
         else if (action === 'link'){
@@ -376,20 +384,24 @@ angular.module('app.controllers', [])
                 $scope.loadingLink = true;
                 $timeout(function(){
                     $scope.loadingLink = false;
+                    $rootScope.keepAdvertOpen = true;
                     window.open($scope.advert.link, "_system");
                 },$scope.advert.link_timeout*1000);
             }
             else{
+                $rootScope.keepAdvertOpen = true;
                 window.open($scope.advert.link, "_system");
             }
         }
         else if (action === 'location'){
+            $rootScope.keepAdvertOpen = true;
             window.open("https://www.google.com/maps/place/" + $scope.advert.location, "_system");
         }
         else if (action === 'info'){
             $scope.openInfoPopup();
         }
         else if (action === 'share'){
+            $rootScope.keepAdvertOpen = true;
             $cordovaSocialSharing
                 .share($scope.advert.name, $scope.advert.name, null, "http://gaapp.appsy.nz/link/" + $scope.advert.id) // Share via native share sheet
              

@@ -49,6 +49,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
 
   
     $ionicPlatform.on("resume", function(){ 
+        $rootScope.keepAdvertOpen = false;
         //window.plugin.notification.local.cancelAll();
         AuthService.userIsLoggedIn().then(function(){
             $timeout(function(){$rootScope.$broadcast("userRegistered");});
@@ -62,7 +63,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     });    
     
     $ionicPlatform.on("pause", function(){ 
-        $rootScope.$broadcast("closeAdvert");
+        if (!$rootScope.keepAdvertOpen){$rootScope.$broadcast("closeAdvert");}
     });    
     
     
