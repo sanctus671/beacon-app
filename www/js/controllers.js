@@ -61,6 +61,10 @@ angular.module('app.controllers', [])
         });
  
     });
+    
+    $scope.openFacebook = function(){
+        window.open('https://www.facebook.com/grabadnz/', "_system");
+    }
 })
 
 
@@ -303,8 +307,22 @@ angular.module('app.controllers', [])
     });    
     
     $scope.openAdvertModal = function(){
+        screen.unlockOrientation();
         $scope.advertModal.show();
     }
+    
+    $rootScope.$on("closeAdvert",function(){
+        $scope.advertModal.hide();
+    })
+    
+    $scope.$on('modal.hidden', function() {
+        screen.lockOrientation('portrait');
+        
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+        screen.lockOrientation('portrait');
+    });     
 
     
     $scope.getAdvert = function(recordId){
