@@ -88,7 +88,7 @@ angular.module('app.controllers', [])
 
 
 
-.controller('DragCtrl', function($scope, MainService, AuthService, $rootScope, $cordovaBeacon, $deviceGyroscope, $ionicPopup, $cordovaSocialSharing, $ionicModal, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaDevice, $state) {
+.controller('DragCtrl', function($scope, MainService, AuthService, $rootScope, $cordovaBeacon, $deviceGyroscope, $ionicPopup, $cordovaSocialSharing, $ionicModal, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaDevice, $state, $timeout) {
 
     $scope.modalOpen = false;
     $scope.advert = {};
@@ -106,8 +106,9 @@ angular.module('app.controllers', [])
     $scope.openAdvertModal = function(){
         $scope.modalOpen = true;
         
-        screen.unlockOrientation();
+        
         $scope.advertModal.show();
+        $timeout(function(){screen.unlockOrientation();});
     }
     
     $rootScope.$on("closeAdvert",function(){
@@ -277,7 +278,7 @@ angular.module('app.controllers', [])
     
 })
 
-.controller('HistoryCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup, $cordovaGeolocation, $cordovaDevice, $rootScope) {
+.controller('HistoryCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup, $cordovaGeolocation, $cordovaDevice, $rootScope, $timeout) {
     $scope.loading = false;
     $scope.records = [];
     $scope.recordAdvertIds = [];
