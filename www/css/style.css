@@ -1,6 +1,23 @@
 /*general styles*/
 
+ion-tabs .tab-item[icon-on="ion-iphone"]{
+    height: 80px;
+    margin-top: -30px;
+    line-height: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #b2b2b2;    
+        opacity: 1;
+    color: rgba(68, 68, 68, 0.7);
+}
 
+ion-tabs .tab-item[icon-on="ion-iphone"] i{
+        height: 60px;
+    font-size: 60px;
+}
+
+ion-tabs .tab-item[icon-on="ion-iphone"] span{
+        font-size: 14px;
+}
 
 .empty-container{
     text-align: center;

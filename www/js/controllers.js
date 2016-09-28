@@ -27,7 +27,6 @@ angular.module('app.controllers', [])
         
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
             var uniqueBeaconKey;
-            console.log(pluginResult);
             for(var i = 0; i < pluginResult.beacons.length; i++) {
                 uniqueBeaconKey = pluginResult.beacons[i].uuid + ":" + pluginResult.beacons[i].major + ":" + pluginResult.beacons[i].minor;
                 /*
@@ -50,7 +49,6 @@ angular.module('app.controllers', [])
         $rootScope.$on("userRegistered", function(){
             MainService.getBeacons().then(function(data){
                 $rootScope.rangedBeacons = data;
-                console.log($rootScope.rangedBeacons);
                 for (var index in $rootScope.rangedBeacons){
                     var beacon = $rootScope.rangedBeacons[index];
                     if (window.cordova){$cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));}
