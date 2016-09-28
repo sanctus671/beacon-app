@@ -499,7 +499,7 @@ angular.module('app.controllers', [])
         for (var index in $scope.records){
             if ($scope.records[index].id === recordId){
                 $scope.advert = $scope.records[index].advert;
-                if ($scope.advert.link_timeout > 0){
+                if ($scope.advert && $scope.advert.link_timeout > 0){
                     $scope.loadingLinks = true;
                     $timeout(function(){
                         $scope.loadingLinks = false;
@@ -510,7 +510,7 @@ angular.module('app.controllers', [])
                 }                
             }
         } 
-        if ($scope.advert.id){
+        if ($scope.advert && $scope.advert.id){
             $scope.openAdvertModal();
         }
     }    
