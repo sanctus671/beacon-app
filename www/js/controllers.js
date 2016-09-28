@@ -73,8 +73,9 @@ angular.module('app.controllers', [])
     $scope.getNotifications = function(){
         $scope.notifications = [];
         for (var index in $rootScope.inRangeBeacons){
-            addNotifiction($rootScope.inRangeBeacons[index]);    
+            $scope.addNotifiction($rootScope.inRangeBeacons[index]);    
         }
+        $scope.$broadcast('scroll.refreshComplete');
     }
     
     $scope.addNotifiction = function(beacon){

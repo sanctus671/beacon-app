@@ -101,6 +101,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
   // Each state's controller can be found in controllers.js
   
   $ionicConfigProvider.tabs.position('bottom');
+  $ionicConfigProvider.tabs.style('standard')
   $stateProvider
 
   // setup an abstract state for the tabs directive
