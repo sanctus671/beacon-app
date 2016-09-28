@@ -4,6 +4,7 @@ angular.module('app.controllers', [])
     
     $rootScope.rangedBeacons = [];
     $rootScope.inRangeBeacons = {};  
+    
      //demo to test local notifications    
      /*
     $timeout(function(){
@@ -67,16 +68,154 @@ angular.module('app.controllers', [])
 
 
 
-.controller('NotificationsCtrl', function($scope, $cordovaBeacon, $rootScope) {
+.controller('NotificationsCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup, $cordovaGeolocation, $cordovaDevice, $rootScope, $timeout) {
     $scope.notifications = [];
+    $scope.loadingLinks = false;
+    
+    $scope.getNotifications = function(){
+        $scope.notifications = [];
+        for (var index in $rootScope.inRangeBeacons){
+            addNotifiction($rootScope.inRangeBeacons[index]);    
+        }
+    }
+    
+    $scope.addNotifiction = function(beacon){
+        MainService.getAdvert(beacon).then(function(data){
+            beacon.advert = data;  
+            $scope.notifications.push(beacon);                         
+        },function(data){
+            beacon.advert = {};  
+            $scope.notifications.push(beacon);             
+            if (data.status_code === 401){
+                AuthService.register();
+            } 
+        })         
+    }
     
     $scope.getNotificationsLength = function(){
-        return $scope.notifications.length + Object.keys($rootScope.inRangeBeacons).length;
+        return $scope.notifications.length;
     }
     
 
     
+
+    $scope.$on("$ionicView.afterEnter", function(event, data){
+       $scope.getNotifications();
+    });    
     
+    
+    
+    $scope.advert = {};
+
+    $ionicModal.fromTemplateUrl('templates/modals/advert.html', {
+        scope: $scope,
+        animation: 'fade-in-scale'
+    }).then(function(modal) {
+        $scope.advertModal = modal;
+    });    
+    
+    $scope.openAdvertModal = function(){
+        screen.unlockOrientation();
+        $scope.advertModal.show();
+    }
+    
+    $rootScope.$on("closeAdvert",function(){
+        $scope.advertModal.hide();
+    })
+    
+    $scope.$on('modal.hidden', function() {
+        screen.lockOrientation('portrait');
+        
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+        screen.lockOrientation('portrait');
+    });     
+
+    
+    $scope.getAdvert = function(index){
+        $scope.advert = {};    
+        $scope.advert = $scope.notifications[index].advert;
+        if ($scope.advert.link_timeout > 0){
+            $scope.loadingLinks = true;
+            $timeout(function(){
+                $scope.loadingLinks = false;
+            },$scope.advert.link_timeout*1000);
+        }
+        else{
+            $scope.loadingLinks = false;
+        }  
+        if ($scope.advert.id){
+            $scope.openAdvertModal();
+        }
+    }    
+    
+    $scope.doAction = function(action){
+        if (action === 'phonepopup'){
+            $scope.openPhonePopup();
+            return;
+        }        
+        $scope.saveRecord(action);
+        if (action === 'phone'){
+            $rootScope.keepAdvertOpen = true;
+            window.open('tel:' + $scope.advert.phone, '_system')
+        }
+        else if (action === 'link'){            
+            $rootScope.keepAdvertOpen = true;
+            window.open($scope.advert.link, "_system");
+            
+        }
+        else if (action === 'location'){
+            $rootScope.keepAdvertOpen = true;
+            window.open("https://www.google.com/maps/place/" + $scope.advert.location, "_system");
+        }
+        else if (action === 'info'){
+            $scope.openInfoPopup();
+        }
+        else if (action === 'share'){
+            $rootScope.keepAdvertOpen = true;
+            $cordovaSocialSharing
+                .share($scope.advert.name, $scope.advert.name, null, "http://gaapp.appsy.nz/link/" + $scope.advert.id) // Share via native share sheet
+             
+        }
+    }
+    
+    $scope.openInfoPopup = function(){
+        var alertPopup = $ionicPopup.alert({
+          title: 'Information',
+          template: '<span ng-show="advert.company">Company: ' + $scope.advert.company + '<br></span>\n\
+                     <span ng-show="advert.category">Category: ' + $scope.advert.category + '<br></span>\n\
+                     ' + $scope.advert.description
+        });       
+    }
+    
+    $scope.openPhonePopup = function(){
+        $ionicPopup.confirm({
+            title: 'Call',
+            template: 'Are you sure you to call ' + $scope.advert.phone + '?'
+          }).then(function(res){
+              if (res){
+                  $scope.doAction("phone");
+              }
+          });
+          
+    } 
+    
+    $scope.saveRecord = function(action){ //executed when an action is made on an advert
+        $cordovaGeolocation
+          .getCurrentPosition({timeout: 10000, enableHighAccuracy: false})
+          .then(function (position) {
+            var lat  = position.coords.latitude;
+            var long = position.coords.longitude;
+            var uuid = $cordovaDevice.getUUID();
+            var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
+            MainService.saveRecord(record);
+          }, function(err) {
+            // error
+          });        
+    }    
+    
+       
     
     
     
@@ -152,6 +291,15 @@ angular.module('app.controllers', [])
         $scope.advert = {};
         MainService.getAdvert(beacon).then(function(data){
             $scope.advert = data;
+            if ($scope.advert.link_timeout > 0){
+                $scope.loadingLinks = true;
+                $timeout(function(){
+                    $scope.loadingLinks = false;
+                },$scope.advert.link_timeout*1000);
+            }
+            else{
+                $scope.loadingLinks = false;
+            }            
             
         },function(data){
             if (data.status_code === 401){
@@ -227,18 +375,8 @@ angular.module('app.controllers', [])
             window.open('tel:' + $scope.advert.phone, '_system')
         }
         else if (action === 'link'){
-            if ($scope.advert.link_timeout > 0){
-                $scope.loadingLink = true;
-                $timeout(function(){
-                    $scope.loadingLink = false;
-                    $rootScope.keepAdvertOpen = true;
-                    window.open($scope.advert.link, "_system");
-                },$scope.advert.link_timeout*1000);
-            }
-            else{
-                $rootScope.keepAdvertOpen = true;
-                window.open($scope.advert.link, "_system");
-            }
+            $rootScope.keepAdvertOpen = true;
+            window.open($scope.advert.link, "_system");           
         }
         else if (action === 'location'){
             $rootScope.keepAdvertOpen = true;
@@ -362,6 +500,15 @@ angular.module('app.controllers', [])
         for (var index in $scope.records){
             if ($scope.records[index].id === recordId){
                 $scope.advert = $scope.records[index].advert;
+                if ($scope.advert.link_timeout > 0){
+                    $scope.loadingLinks = true;
+                    $timeout(function(){
+                        $scope.loadingLinks = false;
+                    },$scope.advert.link_timeout*1000);
+                }
+                else{
+                    $scope.loadingLinks = false;
+                }                
             }
         } 
         if ($scope.advert.id){
@@ -379,19 +526,10 @@ angular.module('app.controllers', [])
             $rootScope.keepAdvertOpen = true;
             window.open('tel:' + $scope.advert.phone, '_system')
         }
-        else if (action === 'link'){
-            if ($scope.advert.link_timeout > 0){
-                $scope.loadingLink = true;
-                $timeout(function(){
-                    $scope.loadingLink = false;
-                    $rootScope.keepAdvertOpen = true;
-                    window.open($scope.advert.link, "_system");
-                },$scope.advert.link_timeout*1000);
-            }
-            else{
-                $rootScope.keepAdvertOpen = true;
-                window.open($scope.advert.link, "_system");
-            }
+        else if (action === 'link'){            
+            $rootScope.keepAdvertOpen = true;
+            window.open($scope.advert.link, "_system");
+            
         }
         else if (action === 'location'){
             $rootScope.keepAdvertOpen = true;
