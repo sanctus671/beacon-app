@@ -180,6 +180,7 @@ angular.module('app.controllers', [])
     }
     
     $scope.openLocation = function(location){
+        if (!location){return;}
         window.open("https://www.google.com/maps/place/" + location, "_system");
     }
     
@@ -338,7 +339,8 @@ angular.module('app.controllers', [])
                 var x = result.x;
                 var y = result.y;
                 var z = result.z;
-                var isMoving = x > 8 || x < -8 || y > 2 || z > 8 || z < -8;
+                console.log(result);
+                var isMoving = x > 2;
                 if ($scope.acceleration.y > 4 && isMoving && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
 
                     var beacon = {}; var proximity = false; 

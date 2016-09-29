@@ -11,9 +11,9 @@
             <span ng-if="!notification.advert.id">Advert in range</span>
             <span ng-if="notification.advert.id">{{notification.advert.name}} advert in range</span>
         </h2>
-        <p ng-if="notification.proximity === 'ProximityImmediate'">Next to you (tap to view location)</p>
-        <p ng-if="notification.proximity === 'ProximityNear'">Close by (tap to view location)</p>
-        <p ng-if="notification.proximity !== 'ProximityNear' && notification.proximity !== 'ProximityImmediate'">Far away (tap to view location)</p>
+        <p ng-if="notification.proximity === 'ProximityImmediate'">Next to you <span ng-if="notification.advert.location">(tap to view location)</span></p>
+        <p ng-if="notification.proximity === 'ProximityNear'">Close by <span ng-if="notification.advert.location">(tap to view location)</span></p>
+        <p ng-if="notification.proximity !== 'ProximityNear' && notification.proximity !== 'ProximityImmediate'">Far away <span ng-if="notification.advert.location">(tap to view location)</span></p>
         
       </ion-item>      
     </ion-list> 
