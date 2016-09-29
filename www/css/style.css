@@ -179,4 +179,5 @@ position: absolute;
 
 .item-thumbnail-left > img:first-child{
         width: auto;
+        max-width:80px;
 }
