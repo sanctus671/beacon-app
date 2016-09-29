@@ -1,5 +1,22 @@
 /*general styles*/
-
+.bar.bar-dark{
+    background-color:black;
+}
+.title-image{
+        width: auto;
+    height: 43px;
+    position:absolute;
+        left: 0;
+}
+.title-text{
+    position: relative;
+    font-size: 30px;
+    padding-left: 50px;
+    line-height: 40px;
+}
+.title-text .red-text{
+    color:red;
+}
 ion-tabs .tab-item[icon-on="ion-iphone"]{
     height: 80px;
     margin-top: -30px;
@@ -32,6 +49,9 @@ ion-tabs .tab-item[icon-on="ion-iphone"] span{
     font-size: 20px;
     text-transform: uppercase;
     padding: 10px;
+}
+.button.disabled, .button[disabled]{
+    opacity:0.2;
 }
 /*notification styles*/
 
@@ -87,11 +107,19 @@ position: absolute;
 
 }
 
-.advert-link-load{
+.advert-link-overlay{
     position: absolute;
-    left: 10px;
-    bottom: 10px;
     color: rgba(169, 169, 169, 0.9);
+    z-index: 99;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    height: 45px;
+    bottom: 0px;
+    left: 0px;    
+}
+
+.links-disabled{
+    pointer-events: none;
 }
 
 .advert-share-button.activated{
@@ -144,3 +172,11 @@ position: absolute;
 
 
 /*records styles */
+
+.item-thumbnail-left{
+    padding-left:80px
+}
+
+.item-thumbnail-left > img:first-child{
+        width: auto;
+}

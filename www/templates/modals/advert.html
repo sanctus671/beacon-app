@@ -11,13 +11,11 @@
         </div>
      
     </ion-content>
-      <span class="advert-link-load" ng-show="advert.link_timeout > 0 && loadingLinks">
-          Links will open in {{advert.link_timeout}} second<span ng-show="advert.link_timeout > 1">s</span>...
-      </span>
+      <div class="advert-link-overlay" ng-show="advert.link_timeout > 0 && loadingLinks"></div>
             <span class="advert-share-button" ng-click="doAction('share')"  ng-show="!loadingLinks">
                 <i class="icon ion-android-share-alt"></i>
             </span>         
-<div class="bar bar-footer advert-action-bar" ng-show="!loadingLinks">
+<div class="bar bar-footer advert-action-bar" ng-class="{'links-disabled': loadingLinks}">
     <button class="button button-assertive" ng-disabled="!advert.phone" ng-click="doAction('phonepopup')"><i class="icon ion-ios-telephone"></i></button>
     <button class="button button-energized" ng-disabled="!advert.link" ng-click="doAction('link')"><i class="icon ion-link"></i></button>
     <button class="button button-balanced" ng-disabled="!advert.location" ng-click="doAction('location')"><i class="icon ion-ios-location"></i></button>

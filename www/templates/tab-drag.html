@@ -1,7 +1,7 @@
-<ion-view view-title="GRAB your AD">
+<ion-view view-title='<span class="title-text"><img class="title-image" src="img/drag2.png" /><span class="red-text">grab</span>ad</span>'>
   <ion-content scroll="false">
-      <div class="drag-container">
-            <div ng-if="loading">
+      <div class="drag-container" ng-click="openAdvertTest()">
+            <div ng-if="loading && false">
                 <ion-spinner class="spinner-assertive"></ion-spinner><br>
               Loading...
             </div>           
@@ -15,10 +15,10 @@
                   Hold your phone up
               </p>
             </div>
-            <div ng-if="getBeaconCount() > 0 && !loading && stage === 2">
+            <div ng-if="getBeaconCount() > 0 && !loading && stage === 2 || true">
               <img src="img/drag2.png"/>
               <p>
-                  Grab or Twist your phone<br> ta Grab your Ad
+                  Grab or Twist your phone<br> to Grab your Ad
               </p>
             </div>          
       </div>

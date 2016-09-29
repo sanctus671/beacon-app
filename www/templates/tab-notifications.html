@@ -5,15 +5,16 @@
         on-refresh="getNotifications()">
     </ion-refresher>        
     <ion-list>
-      <ion-item ng-repeat="notification in notifications" ng-class="{'item-thumbnail-left':notification.advert.id}" ng-click="getAdvert($index)">
+      <ion-item ng-repeat="notification in notifications" ng-class="{'item-thumbnail-left':notification.advert.id}" ng-click="openLocation(notification.advert.location)">
         <img ng-if="notification.advert.id" ng-src="{{notification.advert.image}}">
         <h2>
             <span ng-if="!notification.advert.id">Advert in range</span>
             <span ng-if="notification.advert.id">{{notification.advert.name}} advert in range</span>
         </h2>
-        <p ng-if="notification.proximity === 'ProximityImmediate'">Next to you</p>
-        <p ng-if="notification.proximity === 'ProximityNear'">Close by</p>
-        <p ng-if="notification.proximity !== 'ProximityNear' && notification.proximity !== 'ProximityImmediate'">Far away</p>
+        <p ng-if="notification.proximity === 'ProximityImmediate'">Next to you (tap to view location)</p>
+        <p ng-if="notification.proximity === 'ProximityNear'">Close by (tap to view location)</p>
+        <p ng-if="notification.proximity !== 'ProximityNear' && notification.proximity !== 'ProximityImmediate'">Far away (tap to view location)</p>
+        
       </ion-item>      
     </ion-list> 
       
