@@ -1,12 +1,12 @@
-<ion-view view-title="History">
+<ion-view view-title='<img class="title-image" src="img/grabad.png" />'>
   <ion-content>
     <ion-refresher
         pulling-text="Pull to refresh..."
         on-refresh="doRefresh()">
     </ion-refresher>        
     <ion-list>
-      <ion-item ng-repeat="record in records" ng-click="getAdvert(record.id)" class="item-thumbnail-left">
-            <img ng-src="{{record.advert.image}}">
+      <ion-item ng-repeat="record in records" ng-click="getAdvert(record.id)" ng-class="{'item-thumbnail-left':record.advert.id && record.advert.thumbnail_enabled}" class="item-thumbnail-left">
+            <img ng-if="record.advert.id && record.advert.thumbnail_enabled" ng-src="{{record.advert.image}}">
           <h2>{{record.advert.name}}</h2>
         <p>You engaged with this advert</p>
       </ion-item>

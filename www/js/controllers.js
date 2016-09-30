@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
 
-.controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform, $timeout) {
+.controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform, $timeout, $ionicModal) {
     
     $rootScope.rangedBeacons = [];
     $rootScope.inRangeBeacons = {};  
@@ -61,6 +61,42 @@ angular.module('app.controllers', [])
     $scope.openFacebook = function(){
         window.open('https://www.facebook.com/grabadnz/', "_system");
     }
+    
+    $scope.registerUser = {name:"",email:"",phone:""};
+    $rootScope.registerModalOpened = false;
+    $ionicModal.fromTemplateUrl('templates/modals/register.html', {
+        scope: $scope,
+        animation: 'fade-in-scale'
+    }).then(function(modal) {
+        $scope.registerModal = modal;
+    });    
+    
+    $scope.openRegisterModal = function(){
+        if (!$rootScope.registerModalOpened){
+            $rootScope.registerModalOpened = true;
+            $scope.registerModal.show();
+        }
+    }  
+    
+    $scope.doRegister = function(){
+        $scope.error = "";
+        if (!$scope.registerUser.name || !$scope.registerUser.email || !$scope.registerUser.phone){
+            $scope.error = "Please enter all fields";
+            return;
+        }
+        AuthService.register($scope.registerUser).then(function(){
+            $scope.registerModal.hide();
+            $scope.registerModalOpened = false;
+            $timeout(function(){$rootScope.$broadcast("userRegistered");});
+        },function(data){
+            $scope.error = "An error occured. Please try again.";
+        });        
+    }
+    
+    $rootScope.$on("openRegister", function(){
+        $scope.openRegisterModal();
+    })
+    
 })
 
 
@@ -86,7 +122,7 @@ angular.module('app.controllers', [])
             beacon.advert = {};  
             $scope.notifications.push(beacon);             
             if (data.status_code === 401){
-                AuthService.register();
+                $timeout(function(){$rootScope.$broadcast("openRegister");});
             } 
         })         
     }
@@ -262,7 +298,7 @@ angular.module('app.controllers', [])
                 $scope.advert = data;
             },function(data){
                 if (data.status_code === 401){
-                    AuthService.register();
+                    $timeout(function(){$rootScope.$broadcast("openRegister");});
                 } 
             })              
             window.localStorage.external_load = null;
@@ -307,7 +343,7 @@ angular.module('app.controllers', [])
             
         },function(data){
             if (data.status_code === 401){
-                AuthService.register();
+                $timeout(function(){$rootScope.$broadcast("openRegister");});
             } 
         })        
     }
@@ -460,7 +496,7 @@ angular.module('app.controllers', [])
         },function(data){
             $scope.$broadcast('scroll.refreshComplete');
             if (data.status_code === 401){
-                AuthService.register();
+                $timeout(function(){$rootScope.$broadcast("openRegister");});
             } 
         })
     }

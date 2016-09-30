@@ -30,9 +30,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
 
     },function(response){
         //reregister user
-        AuthService.register().then(function(){
-            $timeout(function(){$rootScope.$broadcast("userRegistered");});
-        });
+        $timeout(function(){$rootScope.$broadcast("openRegister");});
     });    
     
     
@@ -56,9 +54,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
             
         },function(){
             //reregister user
-            AuthService.register().then(function(){
-                $timeout(function(){$rootScope.$broadcast("userRegistered");});
-            });
+            $timeout(function(){$rootScope.$broadcast("openRegister");});
         });
     });    
     
@@ -75,9 +71,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
               $timeout(function(){$rootScope.$broadcast("userRegistered");});
           },function(){
               //reregister user
-              AuthService.register().then(function(){
-                $timeout(function(){$rootScope.$broadcast("userRegistered");});
-            });
+            $timeout(function(){$rootScope.$broadcast("openRegister");});
           });
       }
 

@@ -1,0 +1,30 @@
+  <ion-modal-view>
+	<ion-header-bar class="bar-dark">
+		<h1 class="title modal-title"><img class="title-image" src="img/grabad.png" /></h1>
+	</ion-header-bar>
+        <ion-content class="">
+            <p class="padding" style="text-align:center;">
+                Before you get started, we need to know a few things about you.
+            </p>
+        <div class="list">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Full Name</span>
+            <input type="text" placeholder="John" ng-model="registerUser.name">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Email</span>
+            <input type="text" placeholder="john@example.com" ng-model="registerUser.email">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Phone</span>
+            <input type="text" placeholder="027123123123" ng-model="registerUser.phone">
+          </label>
+        </div>   
+            <div class="padding error-text" ng-if="error" style="text-align:center;color:red;">
+                {{error}}
+            </div>
+        <div class="padding">
+            <button class="button button-block button-assertive" ng-click="doRegister();">Get Started</button>
+        </div>
+        </ion-content>    
+  </ion-modal-view>

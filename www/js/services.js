@@ -2,10 +2,10 @@ angular.module('app.services', [])
 
 
 .service('AuthService', function($http, $q, API_URL, $rootScope) {
-    this.register = function(){
+    this.register = function(user){
         var deferred = $q.defer(),
             AuthService = this;
-        $http.post(API_URL + "/auth/signup")
+        $http.post(API_URL + "/auth/signup", user)
         .success(function(data) {
             AuthService.saveUser(data);            
             deferred.resolve(data);

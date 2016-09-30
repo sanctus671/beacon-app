@@ -1,19 +1,23 @@
-<ion-view view-title="Notifications">
+<ion-view view-title='<img class="title-image" src="img/grabad.png" />'>
   <ion-content>
     <ion-refresher
         pulling-text="Pull to refresh..."
         on-refresh="getNotifications()">
     </ion-refresher>        
     <ion-list>
-      <ion-item ng-repeat="notification in notifications" ng-class="{'item-thumbnail-left':notification.advert.id}" ng-click="openLocation(notification.advert.location)">
-        <img ng-if="notification.advert.id" ng-src="{{notification.advert.image}}">
+      <ion-item ng-repeat="notification in notifications" ng-class="{'item-thumbnail-left':notification.advert.id && notification.advert.thumbnail_enabled}" ng-click="openLocation(notification.advert.location)">
+        <img ng-if="notification.advert.id && notification.advert.thumbnail_enabled" ng-src="{{notification.advert.image}}">
         <h2>
             <span ng-if="!notification.advert.id">Advert in range</span>
             <span ng-if="notification.advert.id">{{notification.advert.name}} advert in range</span>
         </h2>
-        <p ng-if="notification.proximity === 'ProximityImmediate'">Next to you <span ng-if="notification.advert.location">(tap to view location)</span></p>
-        <p ng-if="notification.proximity === 'ProximityNear'">Close by <span ng-if="notification.advert.location">(tap to view location)</span></p>
-        <p ng-if="notification.proximity !== 'ProximityNear' && notification.proximity !== 'ProximityImmediate'">Far away <span ng-if="notification.advert.location">(tap to view location)</span></p>
+        <p>
+            <span ng-if="notification.proximity === 'ProximityImmediate'">Next to you</span>
+            <span ng-if="notification.proximity === 'ProximityNear'">Close by</span>
+            <span ng-if="notification.proximity !== 'ProximityNear' && notification.proximity !== 'ProximityImmediate'">Far away</span>
+            <span ng-if="notification.advert.store_name"><br>{{notification.advert.store_name}}</span>
+            <span ng-if="notification.advert.store_address"><br>{{notification.advert.store_address}}</span>
+        </p>
         
       </ion-item>      
     </ion-list> 

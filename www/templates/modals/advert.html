@@ -1,24 +1,23 @@
   <ion-modal-view>
-	<ion-header-bar class="bar-assertive">
+	<ion-header-bar class="bar-dark">
 		<h1 class="title modal-title">{{advert.name ? advert.name : "No advert found"}}</h1>
 		<div class="button modal-button" ng-click="advertModal.hide()"><span class="icon ion-close"></span></div>
 	</ion-header-bar>
-    <ion-content class="advert-page">
-        <div class="advert-container">
-            <img ng-show="advert.image" ng-src="{{advert.image}}"/>
+        <ion-content class="advert-page">
+            <div class="advert-container">
+                <img ng-show="advert.image" ng-src="{{advert.image}}"/>
 
-            
-        </div>
-     
-    </ion-content>
-      <div class="advert-link-overlay" ng-show="advert.link_timeout > 0 && loadingLinks"></div>
-            <span class="advert-share-button" ng-click="doAction('share')"  ng-show="!loadingLinks">
-                <i class="icon ion-android-share-alt"></i>
-            </span>         
-<div class="bar bar-footer advert-action-bar" ng-class="{'links-disabled': loadingLinks}">
-    <button class="button button-assertive" ng-disabled="!advert.phone" ng-click="doAction('phonepopup')"><i class="icon ion-ios-telephone"></i></button>
-    <button class="button button-energized" ng-disabled="!advert.link" ng-click="doAction('link')"><i class="icon ion-link"></i></button>
-    <button class="button button-balanced" ng-disabled="!advert.location" ng-click="doAction('location')"><i class="icon ion-ios-location"></i></button>
-    <button class="button button-positive" ng-disabled="!advert.description && !advert.company && !advert.category" ng-click="doAction('info')"><i class="icon ion-information-circled"></i></button>
-</div>      
+
+            </div>
+
+        </ion-content>
+        <span class="advert-share-button" ng-click="doAction('share')"  ng-show="!loadingLinks">
+            <i class="icon ion-android-share-alt"></i>
+        </span>         
+        <div class="bar bar-footer advert-action-bar" ng-class="{'links-disabled': loadingLinks}">
+            <button class="button button-assertive" ng-disabled="!advert.phone || loadingLinks" ng-click="doAction('phonepopup')"><i class="icon ion-ios-telephone"></i></button>
+            <button class="button button-energized" ng-disabled="!advert.link || loadingLinks" ng-click="doAction('link')"><i class="icon ion-link"></i></button>
+            <button class="button button-balanced" ng-disabled="!advert.location || loadingLinks" ng-click="doAction('location')"><i class="icon ion-ios-location"></i></button>
+            <button class="button button-positive" ng-disabled="(!advert.description && !advert.company && !advert.category)  || loadingLinks" ng-click="doAction('info')"><i class="icon ion-information-circled"></i></button>
+        </div>      
   </ion-modal-view>
