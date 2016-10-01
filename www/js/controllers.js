@@ -303,6 +303,7 @@ angular.module('app.controllers', [])
     $timeout(function(){
         if (window.localStorage.external_load !== null && window.localStorage.external_load !=="null"){
             var url = window.localStorage.external_load;
+            if (!url){return;}
             var advertId = url.replace(/\//g, "").split(":")[1];
 
             $scope.openAdvertModal();

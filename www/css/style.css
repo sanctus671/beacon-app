@@ -91,6 +91,7 @@ ion-tabs .tab-item[icon-on="ion-iphone"] span{
 
 .advert-container img{
         max-width: 100%;
+        margin-bottom: 44px;
 }
 
 .advert-share-button{
