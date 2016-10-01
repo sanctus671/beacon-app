@@ -1,6 +1,6 @@
   <ion-modal-view>
 	<ion-header-bar class="bar-dark">
-		<h1 class="title modal-title">{{advert.name ? advert.name : "No advert found"}}</h1>
+		<h1 class="title modal-title">{{advert.name ? advert.name : "Not Loaded"}}</h1>
 		<div class="button modal-button" ng-click="advertModal.hide()"><span class="icon ion-close"></span></div>
 	</ion-header-bar>
         <ion-content class="advert-page">
@@ -8,7 +8,7 @@
                 <i class="icon ion-alert-circled"></i>
                 <p>Sorry, we could not grab that ad</p>
             </div>     
-            <div ng-if="loadingAdvert">
+            <div ng-if="loadingAdvert" style="text-align:center;">
                 <ion-spinner class="spinner-assertive"></ion-spinner>
             </div>              
             
