@@ -4,6 +4,14 @@
 		<div class="button modal-button" ng-click="advertModal.hide()"><span class="icon ion-close"></span></div>
 	</ion-header-bar>
         <ion-content class="advert-page">
+            <div ng-if="!advert.id && !loadingAdvert" class="empty-container">
+                <i class="icon ion-alert-circled"></i>
+                <p>Sorry, we could not grab that ad</p>
+            </div>     
+            <div ng-if="loadingAdvert">
+                <ion-spinner class="spinner-assertive"></ion-spinner>
+            </div>              
+            
             <div class="advert-container">
                 <img ng-show="advert.image" ng-src="{{advert.image}}"/>
 
@@ -11,7 +19,7 @@
             </div>
 
         </ion-content>
-        <span class="advert-share-button" ng-click="doAction('share')"  ng-show="!loadingLinks">
+        <span class="advert-share-button" ng-click="doAction('share')"  ng-show="advert.id && !loadingLinks">
             <i class="icon ion-android-share-alt"></i>
         </span>         
         <div class="bar bar-footer advert-action-bar" ng-class="{'links-disabled': loadingLinks}">

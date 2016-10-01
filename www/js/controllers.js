@@ -3,7 +3,9 @@ angular.module('app.controllers', [])
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform, $timeout, $ionicModal) {
     
     $rootScope.rangedBeacons = [];
-    $rootScope.inRangeBeacons = {};  
+    $rootScope.inRangeBeacons = {
+        "b9407f30-f5f8-466e-aff9-25556b57fe6d" : {uuid:"b9407f30-f5f8-466e-aff9-25556b57fe6d", major:"51316", minor:"26815"}
+    };  
     
      //demo to test local notifications    
      /*
@@ -105,7 +107,7 @@ angular.module('app.controllers', [])
 .controller('NotificationsCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup, $cordovaGeolocation, $cordovaDevice, $rootScope, $timeout) {
     $scope.notifications = [];
     $scope.loadingLinks = false;
-    
+    $scope.loadingAdvert = false;
     $scope.getNotifications = function(){
         $scope.notifications = [];
         for (var index in $rootScope.inRangeBeacons){
@@ -171,6 +173,16 @@ angular.module('app.controllers', [])
     $scope.getAdvert = function(index){
         $scope.advert = {};    
         $scope.advert = $scope.notifications[index].advert;
+        if ($scope.advert.auto_open){
+            if ($scope.advert.auto_open_timeout > 0){
+                $timeout(function(){
+                    $scope.doAction('link');
+                },$scope.advert.auto_open_timeout*1000);                    
+            }
+            else{
+                $scope.doAction('link');
+            }
+        }        
         if ($scope.advert.link_timeout > 0){
             $scope.loadingLinks = true;
             $timeout(function(){
@@ -271,7 +283,8 @@ angular.module('app.controllers', [])
     $scope.stage = 2;
     $scope.loading = true;
     $scope.pullCount = 0;
-    
+    $scope.loadingAdvert = false;
+    $scope.currentBeacon = {uuid:0,major:0,minor:0};
     $ionicModal.fromTemplateUrl('templates/modals/advert.html', {
         scope: $scope,
         animation: 'slide-in-down'
@@ -294,9 +307,32 @@ angular.module('app.controllers', [])
 
             $scope.openAdvertModal();
             $scope.advert = {};
+            $scope.loadingAdvert = true;
             MainService.getAdvertById(advertId).then(function(data){
+                $scope.loadingAdvert = false;
                 $scope.advert = data;
+                if ($scope.advert.auto_open){
+                    if ($scope.advert.auto_open_timeout > 0){
+                        $timeout(function(){
+                            $scope.doAction('link');
+                        },$scope.advert.auto_open_timeout*1000);                    
+                    }
+                    else{
+                        $scope.doAction('link');
+                    }
+                }                
+                if ($scope.advert.link_timeout > 0){
+                    $scope.loadingLinks = true;
+                    $timeout(function(){
+                        $scope.loadingLinks = false;
+                    },$scope.advert.link_timeout*1000);
+                }
+                else{
+                    $scope.loadingLinks = false;
+                }  
             },function(data){
+                $scope.loadingAdvert = false;
+                $timeout(function(){$scope.advertModal.hide()},2000);
                 if (data.status_code === 401){
                     $timeout(function(){$rootScope.$broadcast("openRegister");});
                 } 
@@ -329,8 +365,20 @@ angular.module('app.controllers', [])
     $scope.getAdvert = function(beacon){
         $scope.modalOpen = true;
         $scope.advert = {};
+        $scope.loadingAdvert = true;
         MainService.getAdvert(beacon).then(function(data){
+            $scope.loadingAdvert = false;
             $scope.advert = data;
+            if ($scope.advert.auto_open){
+                if ($scope.advert.auto_open_timeout > 0){
+                    $timeout(function(){
+                        $scope.doAction('link');
+                    },$scope.advert.auto_open_timeout*1000);                    
+                }
+                else{
+                    $scope.doAction('link');
+                }
+            }
             if ($scope.advert.link_timeout > 0){
                 $scope.loadingLinks = true;
                 $timeout(function(){
@@ -342,6 +390,8 @@ angular.module('app.controllers', [])
             }            
             
         },function(data){
+            $scope.loadingAdvert = false;
+            $timeout(function(){$scope.advertModal.hide()},2000);
             if (data.status_code === 401){
                 $timeout(function(){$rootScope.$broadcast("openRegister");});
             } 
@@ -393,6 +443,7 @@ angular.module('app.controllers', [])
                             beacon = $rootScope.inRangeBeacons[index];
                         }
                     }
+                    $scope.currentBeacon = beacon;
                     $scope.getAdvert(beacon);
                     $scope.openAdvertModal();              
                 } 
@@ -463,7 +514,14 @@ angular.module('app.controllers', [])
             var lat  = position.coords.latitude;
             var long = position.coords.longitude;
             var uuid = $cordovaDevice.getUUID();
-            var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
+            var beaconID = "";
+            for (var index in $rootScope.rangedBeacons){
+                if ($rootScope.rangedBeacons[index].uuid === $scope.currentBeacon.uuid && $rootScope.rangedBeacons[index].major === $scope.currentBeacon.major && $rootScope.rangedBeacons[index].minor === $scope.currentBeacon.minor){
+                    beaconID = $rootScope.rangedBeacons[index].id;
+                    break;
+                }
+            }
+            var record = {advert_id: $scope.advert.id,beacon_id:beaconID, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
             MainService.saveRecord(record);
           }, function(err) {
             // error
@@ -479,7 +537,7 @@ angular.module('app.controllers', [])
     $scope.records = [];
     $scope.recordAdvertIds = [];
     $scope.records = [];    
-    
+    $scope.loadingAdvert = false;
     $scope.doRefresh = function(){  
         $scope.loading = true;
         MainService.getRecords().then(function(data){
@@ -517,7 +575,7 @@ angular.module('app.controllers', [])
     });    
     
     $scope.openAdvertModal = function(){
-        screen.unlockOrientation();
+        //screen.unlockOrientation();
         $scope.advertModal.show();
     }
     
@@ -540,6 +598,16 @@ angular.module('app.controllers', [])
         for (var index in $scope.records){
             if ($scope.records[index].id === recordId){
                 $scope.advert = $scope.records[index].advert;
+                if ($scope.advert.auto_open){
+                    if ($scope.advert.auto_open_timeout > 0){
+                        $timeout(function(){
+                            $scope.doAction('link');
+                        },$scope.advert.auto_open_timeout*1000);                    
+                    }
+                    else{
+                        $scope.doAction('link');
+                    }
+                }                
                 if ($scope.advert && $scope.advert.link_timeout > 0){
                     $scope.loadingLinks = true;
                     $timeout(function(){
