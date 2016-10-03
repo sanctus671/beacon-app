@@ -108,6 +108,7 @@ angular.module('app.controllers', [])
     $scope.notifications = [];
     $scope.loadingLinks = false;
     $scope.loadingAdvert = false;
+    $scope.timeoutLink = false;
     $scope.getNotifications = function(){
         $scope.notifications = [];
         for (var index in $rootScope.inRangeBeacons){
@@ -308,9 +309,9 @@ angular.module('app.controllers', [])
     }
     
     $timeout(function(){
-        console.log(window.localStorage.external_load);
+
         if (window.localStorage.external_load !== null && window.localStorage.external_load !=="null" && window.localStorage.external_load !== undefined && window.localStorage.external_load){
-            console.log("here");
+
             var url = window.localStorage.external_load;
             if (!url){return;}
             var advertId = url.replace(/\//g, "").split(":")[1];
@@ -325,7 +326,7 @@ angular.module('app.controllers', [])
                     if ($scope.advert.auto_open_timeout > 0){
                         $scope.timeoutLink = $timeout(function(){
                             $scope.doAction('link');
-                        },$scope.advert.auto_open_timeout*1000);                    
+                        },$scope.advert.auto_open_timeout*1000);
                     }
                     else{
                         $scope.doAction('link');
@@ -369,6 +370,7 @@ angular.module('app.controllers', [])
     $scope.$on('modal.removed', function() {
         $scope.modalOpen = false;
         screen.lockOrientation('portrait');
+        console.log($scope.timeoutLink);
         if ($scope.timeoutLink){
             $timeout.cancel($scope.timeoutLink);
         }        
@@ -388,7 +390,7 @@ angular.module('app.controllers', [])
             $scope.advert = data;
             if ($scope.advert.auto_open){
                 if ($scope.advert.auto_open_timeout > 0){
-                    $timeout(function(){
+                    $scope.timeoutLink = $timeout(function(){
                         $scope.doAction('link');
                     },$scope.advert.auto_open_timeout*1000);                    
                 }
@@ -555,6 +557,7 @@ angular.module('app.controllers', [])
     $scope.recordAdvertIds = [];
     $scope.records = [];    
     $scope.loadingAdvert = false;
+    $scope.timeoutLink = false;
     $scope.doRefresh = function(){  
         $scope.loading = true;
         MainService.getRecords().then(function(data){
@@ -592,7 +595,7 @@ angular.module('app.controllers', [])
     });    
     
     $scope.openAdvertModal = function(){
-        //screen.unlockOrientation();
+        screen.unlockOrientation();
         $scope.advertModal.show();
     }
     
