@@ -3,9 +3,7 @@ angular.module('app.controllers', [])
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform, $timeout, $ionicModal) {
     
     $rootScope.rangedBeacons = [];
-    $rootScope.inRangeBeacons = {
-        "b9407f30-f5f8-466e-aff9-25556b57fe6d" : {uuid:"b9407f30-f5f8-466e-aff9-25556b57fe6d", major:"51316", minor:"26815"}
-    };  
+    $rootScope.inRangeBeacons = {};  
     
      //demo to test local notifications    
      /*
