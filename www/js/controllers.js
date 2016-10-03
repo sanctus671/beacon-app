@@ -349,7 +349,7 @@ angular.module('app.controllers', [])
             })              
             window.localStorage.external_load = null;
         }
-    },1000);    
+    },3000);    
     
     
     $rootScope.$on("closeAdvert",function(){
