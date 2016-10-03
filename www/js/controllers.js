@@ -162,11 +162,17 @@ angular.module('app.controllers', [])
     
     $scope.$on('modal.hidden', function() {
         screen.lockOrientation('portrait');
+        if ($scope.timeoutLink && $scope.advert.auto_open){
+            $timeout.cancel($scope.timeoutLink);
+        }        
         
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function() {
         screen.lockOrientation('portrait');
+        if ($scope.timeoutLink && $scope.advert.auto_open){
+            $timeout.cancel($scope.timeoutLink);
+        }        
     });     
 
     
@@ -284,6 +290,7 @@ angular.module('app.controllers', [])
     $scope.loading = true;
     $scope.pullCount = 0;
     $scope.loadingAdvert = false;
+    $scope.timeoutLink = false;
     $scope.currentBeacon = {uuid:0,major:0,minor:0};
     $ionicModal.fromTemplateUrl('templates/modals/advert.html', {
         scope: $scope,
@@ -301,7 +308,9 @@ angular.module('app.controllers', [])
     }
     
     $timeout(function(){
+        console.log(window.localStorage.external_load);
         if (window.localStorage.external_load !== null && window.localStorage.external_load !=="null"){
+            console.log("here");
             var url = window.localStorage.external_load;
             if (!url){return;}
             var advertId = url.replace(/\//g, "").split(":")[1];
@@ -314,7 +323,7 @@ angular.module('app.controllers', [])
                 $scope.advert = data;
                 if ($scope.advert.auto_open){
                     if ($scope.advert.auto_open_timeout > 0){
-                        $timeout(function(){
+                        $scope.timeoutLink = $timeout(function(){
                             $scope.doAction('link');
                         },$scope.advert.auto_open_timeout*1000);                    
                     }
@@ -350,12 +359,18 @@ angular.module('app.controllers', [])
     $scope.$on('modal.hidden', function() {
         $scope.modalOpen = false;
         screen.lockOrientation('portrait');
+        if ($scope.timeoutLink && $scope.advert.auto_open){
+            $timeout.cancel($scope.timeoutLink);
+        }
         
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function() {
         $scope.modalOpen = false;
         screen.lockOrientation('portrait');
+        if ($scope.timeoutLink && $scope.advert.auto_open){
+            $timeout.cancel($scope.timeoutLink);
+        }        
     });    
     
     $scope.getBeaconCount = function(){
@@ -586,11 +601,17 @@ angular.module('app.controllers', [])
     
     $scope.$on('modal.hidden', function() {
         screen.lockOrientation('portrait');
+        if ($scope.timeoutLink && $scope.advert.auto_open){
+            $timeout.cancel($scope.timeoutLink);
+        }        
         
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function() {
         screen.lockOrientation('portrait');
+        if ($scope.timeoutLink && $scope.advert.auto_open){
+            $timeout.cancel($scope.timeoutLink);
+        }        
     });     
 
     
