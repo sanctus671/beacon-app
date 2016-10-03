@@ -360,7 +360,6 @@ angular.module('app.controllers', [])
     $scope.$on('modal.hidden', function() {
         $scope.modalOpen = false;
         screen.lockOrientation('portrait');
-        console.log($scope.timeoutLink);
         if ($scope.timeoutLink){
             $timeout.cancel($scope.timeoutLink);
         }
@@ -370,7 +369,6 @@ angular.module('app.controllers', [])
     $scope.$on('modal.removed', function() {
         $scope.modalOpen = false;
         screen.lockOrientation('portrait');
-        console.log($scope.timeoutLink);
         if ($scope.timeoutLink){
             $timeout.cancel($scope.timeoutLink);
         }        
