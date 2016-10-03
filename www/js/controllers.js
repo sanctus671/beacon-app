@@ -309,7 +309,7 @@ angular.module('app.controllers', [])
     
     $timeout(function(){
         console.log(window.localStorage.external_load);
-        if (window.localStorage.external_load !== null && window.localStorage.external_load !=="null"){
+        if (window.localStorage.external_load !== null && window.localStorage.external_load !=="null" && window.localStorage.external_load !== undefined && window.localStorage.external_load){
             console.log("here");
             var url = window.localStorage.external_load;
             if (!url){return;}
