@@ -359,7 +359,8 @@ angular.module('app.controllers', [])
     $scope.$on('modal.hidden', function() {
         $scope.modalOpen = false;
         screen.lockOrientation('portrait');
-        if ($scope.timeoutLink && $scope.advert.auto_open){
+        console.log($scope.timeoutLink);
+        if ($scope.timeoutLink){
             $timeout.cancel($scope.timeoutLink);
         }
         
@@ -368,7 +369,7 @@ angular.module('app.controllers', [])
     $scope.$on('modal.removed', function() {
         $scope.modalOpen = false;
         screen.lockOrientation('portrait');
-        if ($scope.timeoutLink && $scope.advert.auto_open){
+        if ($scope.timeoutLink){
             $timeout.cancel($scope.timeoutLink);
         }        
     });    
