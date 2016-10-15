@@ -453,7 +453,12 @@ angular.module('app.controllers', [])
 
                     var beacon = {}; var proximity = false; 
                     for (var index in $rootScope.inRangeBeacons){
-                        if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate"){
+                        if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate" && $rootScope.inRangeBeacons[index].uuid === "12345678-1234-1234-1234-123456789012" && Object.keys($rootScope.inRangeBeacons).length < 2){
+                            beacon = $rootScope.inRangeBeacons[index];
+                            proximity = "ProximityImmediate";
+                            break;                            
+                        }
+                        if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate" && $rootScope.inRangeBeacons[index].uuid !== "12345678-1234-1234-1234-123456789012"){
                             beacon = $rootScope.inRangeBeacons[index];
                             proximity = "ProximityImmediate";
                             break;
