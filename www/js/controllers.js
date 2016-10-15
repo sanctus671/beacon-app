@@ -3,7 +3,14 @@ angular.module('app.controllers', [])
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform, $timeout, $ionicModal) {
     
     $rootScope.rangedBeacons = [];
-    $rootScope.inRangeBeacons = {};  
+    $rootScope.inRangeBeacons = {
+        "12345678-1234-1234-1234-123456789012:12345:12345":{
+            uuid:"12345678-1234-1234-1234-123456789012",
+            major:"12345",
+            minor:"12345",
+            proximity:"ProximityImmediate"
+        }
+    };  
     
      //demo to test local notifications    
      /*
@@ -247,9 +254,10 @@ angular.module('app.controllers', [])
     }
     
     $scope.openPhonePopup = function(){
+        var phone = $scope.advert.phone ? $scope.advert.phone : "Unknown";
         $ionicPopup.confirm({
             title: 'Call',
-            template: 'Are you sure you to call ' + $scope.advert.phone + '?'
+            template: 'Are you sure you want to call <br>' + phone + '?'
           }).then(function(res){
               if (res){
                   $scope.doAction("phone");
@@ -509,9 +517,10 @@ angular.module('app.controllers', [])
     }
     
     $scope.openPhonePopup = function(){
+        var phone = $scope.advert.phone ? $scope.advert.phone : "Unknown";
         $ionicPopup.confirm({
             title: 'Call',
-            template: 'Are you sure you to call ' + $scope.advert.phone + '?'
+            template: 'Are you sure you want to call <br>' + phone + '?'
           }).then(function(res){
               if (res){
                   $scope.doAction("phone");
@@ -686,9 +695,10 @@ angular.module('app.controllers', [])
     }
     
     $scope.openPhonePopup = function(){
+        var phone = $scope.advert.phone ? $scope.advert.phone : "Unknown";
         $ionicPopup.confirm({
             title: 'Call',
-            template: 'Are you sure you to call ' + $scope.advert.phone + '?'
+            template: 'Are you sure you want to call <br>' + phone + '?'
           }).then(function(res){
               if (res){
                   $scope.doAction("phone");
