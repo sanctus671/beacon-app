@@ -3,14 +3,7 @@ angular.module('app.controllers', [])
 .controller('TabsCtrl', function($scope, $rootScope, MainService, $cordovaBeacon, AuthService, $ionicPlatform, $timeout, $ionicModal) {
     
     $rootScope.rangedBeacons = [];
-    $rootScope.inRangeBeacons = {
-        "12345678-1234-1234-1234-123456789012:12345:12345":{
-            uuid:"12345678-1234-1234-1234-123456789012",
-            major:"12345",
-            minor:"12345",
-            proximity:"ProximityImmediate"
-        }
-    };  
+    $rootScope.inRangeBeacons = {};  
     
      //demo to test local notifications    
      /*
@@ -356,7 +349,45 @@ angular.module('app.controllers', [])
             })              
             window.localStorage.external_load = null;
         }
-    },3000);    
+    },3000); 
+    
+    
+    //open default beacon
+    $rootScope.$on("userRegistered", function(){
+        $timeout(function(){
+            $scope.openAdvertModal();
+            $scope.loadingAdvert = true;
+            MainService.getAdvertById(1).then(function(data){
+                $scope.loadingAdvert = false;
+                $scope.advert = data;
+                if ($scope.advert.auto_open){
+                    if ($scope.advert.auto_open_timeout > 0){
+                        $scope.timeoutLink = $timeout(function(){
+                            $scope.doAction('link');
+                        },$scope.advert.auto_open_timeout*1000);
+                    }
+                    else{
+                        $scope.doAction('link');
+                    }
+                }                
+                if ($scope.advert.link_timeout > 0){
+                    $scope.loadingLinks = true;
+                    $timeout(function(){
+                        $scope.loadingLinks = false;
+                    },$scope.advert.link_timeout*1000);
+                }
+                else{
+                    $scope.loadingLinks = false;
+                }  
+            },function(data){
+                $scope.loadingAdvert = false;
+                $timeout(function(){$scope.advertModal.hide()},2000);
+                if (data.status_code === 401){
+                    $timeout(function(){$rootScope.$broadcast("openRegister");});
+                } 
+            })   
+        },1000);
+    })
     
     
     $rootScope.$on("closeAdvert",function(){

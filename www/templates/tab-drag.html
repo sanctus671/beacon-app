@@ -1,6 +1,7 @@
 <ion-view view-title='<img class="title-image" src="img/grabad.png" />'>
   <ion-content scroll="false">
       <div class="drag-container">
+            <img src="img/drag2.png"/>
             <div ng-if="loading">
                 <ion-spinner class="spinner-assertive"></ion-spinner><br>
               Loading...
@@ -16,7 +17,7 @@
               </p>
             </div>
             <div ng-if="getBeaconCount() > 0 && !loading && stage === 2">
-              <img src="img/drag2.png"/>
+              
               <p>
                   Grab your Ad
               </p>
