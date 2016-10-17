@@ -87,7 +87,7 @@ angular.module('app.controllers', [])
         AuthService.register($scope.registerUser).then(function(){
             $scope.registerModal.hide();
             $scope.registerModalOpened = false;
-            $timeout(function(){$rootScope.$broadcast("userRegistered");});
+            $timeout(function(){$rootScope.$broadcast("userRegistered");$rootScope.$broadcast("openTutorial");});
         },function(data){
             $scope.error = "An error occured. Please try again.";
         });        
@@ -353,7 +353,7 @@ angular.module('app.controllers', [])
     
     
     //open default beacon
-    $rootScope.$on("userRegistered", function(){
+    $rootScope.$on("openTutorial", function(){
         $timeout(function(){
             $scope.openAdvertModal();
             $scope.loadingAdvert = true;
