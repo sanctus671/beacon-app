@@ -26,7 +26,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     $rootScope.devicePlatform = ionic.Platform.platform();
 
     AuthService.userIsLoggedIn().then(function(response){
-        $timeout(function(){$rootScope.$broadcast("userRegistered");});
+        $timeout(function(){$rootScope.$broadcast("userRegistered");$rootScope.$broadcast("openTutorial");});
 
     },function(response){
         //reregister user
