@@ -68,7 +68,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){ // UI Router Authentication Check
       if (toState.data.authenticate){
           AuthService.userIsLoggedIn().then(function(response){
-              $timeout(function(){$rootScope.$broadcast("userRegistered");});
+              //$timeout(function(){$rootScope.$broadcast("userRegistered");});
           },function(){
               //reregister user
             $timeout(function(){$rootScope.$broadcast("openRegister");});

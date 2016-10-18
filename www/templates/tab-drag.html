@@ -6,10 +6,13 @@
                 <ion-spinner class="spinner-assertive"></ion-spinner><br>
               Loading...
             </div>           
-            <div ng-if="getBeaconCount() < 1 && !loading">
+            <div ng-if="getBeaconCount() < 1 && !loading && !searchTimeout">
                 <ion-spinner class="spinner-assertive"></ion-spinner><br>
               Searching...
-            </div>          
+            </div>     
+            <div ng-if="getBeaconCount() < 1 && !loading && searchTimeout">
+                <p>There are no Grabable Ads nearby</p>
+            </div>              
             <div ng-if="getBeaconCount() > 0 && !loading && stage === 1">
               <img src="img/drag2.png"/>
               <p>

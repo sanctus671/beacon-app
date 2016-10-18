@@ -291,6 +291,7 @@ angular.module('app.controllers', [])
     $scope.pullCount = 0;
     $scope.loadingAdvert = false;
     $scope.timeoutLink = false;
+    $scope.searchTimeout = false;
     $scope.currentBeacon = {uuid:0,major:0,minor:0};
     $ionicModal.fromTemplateUrl('templates/modals/advert.html', {
         scope: $scope,
@@ -306,6 +307,10 @@ angular.module('app.controllers', [])
         screen.unlockOrientation();
         $scope.advertModal.show();
     }
+    
+    $timeout(function(){
+        $scope.searchTimeout = true;
+    },5000);
     
     $timeout(function(){
 
