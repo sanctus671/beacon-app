@@ -104,6 +104,7 @@ angular.module('app.controllers', [])
 
 .controller('NotificationsCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup, $cordovaGeolocation, $cordovaDevice, $rootScope, $timeout) {
     $scope.notifications = [];
+    $scope.displayNotifications = [];
     $scope.loadingLinks = false;
     $scope.loadingAdvert = false;
     $scope.timeoutLink = false;
@@ -112,6 +113,7 @@ angular.module('app.controllers', [])
         for (var index in $rootScope.inRangeBeacons){
             $scope.addNotifiction($rootScope.inRangeBeacons[index]);    
         }
+        $scope.displayNotifications = angular.copy($scope.notifications);
         $scope.$broadcast('scroll.refreshComplete');
     }
     
@@ -129,7 +131,7 @@ angular.module('app.controllers', [])
     }
     
     $scope.getNotificationsLength = function(){
-        return $scope.notifications.length;
+        return $scope.displayNotifications.length;
     }
     
 
