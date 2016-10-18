@@ -5,7 +5,7 @@
         on-refresh="getNotifications()">
     </ion-refresher>        
     <ion-list>
-      <ion-item ng-repeat="notification in displayNotifications" ng-class="{'item-thumbnail-left':notification.advert.id && notification.advert.thumbnail_enabled}">
+      <ion-item ng-repeat="notification in notifications" ng-class="{'item-thumbnail-left':notification.advert.id && notification.advert.thumbnail_enabled}">
         <img ng-if="notification.advert.id && notification.advert.thumbnail_enabled" ng-src="{{notification.advert.image}}">
         <h2>
             <span ng-if="!notification.advert.id">Advert in range</span>
