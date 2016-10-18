@@ -307,10 +307,11 @@ angular.module('app.controllers', [])
         screen.unlockOrientation();
         $scope.advertModal.show();
     }
-    
-    $timeout(function(){
-        $scope.searchTimeout = true;
-    },5000);
+    $rootScope.$on("userRegistered", function(){
+        $timeout(function(){
+            $scope.searchTimeout = true;
+        },5000);
+    })
     
     $timeout(function(){
 
