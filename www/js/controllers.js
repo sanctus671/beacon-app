@@ -53,7 +53,7 @@ angular.module('app.controllers', [])
                 for (var index in $rootScope.rangedBeacons){
                     var beacon = $rootScope.rangedBeacons[index];
                     if (seenUUID.indexOf(beacon.uuid) < 0){
-                        if (window.cordova){$cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));}
+                        if (window.cordova){$cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid));}
                         seenUUID.push(beacon.uuid);
                     }
                 }
