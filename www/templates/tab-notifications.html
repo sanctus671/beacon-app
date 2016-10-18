@@ -5,7 +5,7 @@
         on-refresh="getNotifications()">
     </ion-refresher>        
     <ion-list>
-      <ion-item ng-repeat="notification in notifications" ng-class="{'item-thumbnail-left':notification.advert.id && notification.advert.thumbnail_enabled}">
+      <ion-item ng-if="!loadingBeacons" ng-repeat="notification in notifications" ng-class="{'item-thumbnail-left':notification.advert.id && notification.advert.thumbnail_enabled}">
         <img ng-if="notification.advert.id && notification.advert.thumbnail_enabled" ng-src="{{notification.advert.image}}">
         <h2>
             <span ng-if="!notification.advert.id">Advert in range</span>
@@ -19,7 +19,25 @@
             <span ng-if="notification.advert.store_address"><br>{{notification.advert.store_address}}</span>
         </p>
         
-      </ion-item>      
+      </ion-item>     
+        
+      <ion-item ng-if="loadingBeacons" ng-repeat="notification in tempNotifications" ng-class="{'item-thumbnail-left':notification.advert.id && notification.advert.thumbnail_enabled}">
+        <img ng-if="notification.advert.id && notification.advert.thumbnail_enabled" ng-src="{{notification.advert.image}}">
+        <h2>
+            <span ng-if="!notification.advert.id">Advert in range</span>
+            <span ng-if="notification.advert.id">{{notification.advert.name}} advert in range</span>
+        </h2>
+        <p>
+            <span ng-if="notification.proximity === 'ProximityImmediate'">Next to you</span>
+            <span ng-if="notification.proximity === 'ProximityNear'">Close by</span>
+            <span ng-if="notification.proximity !== 'ProximityNear' && notification.proximity !== 'ProximityImmediate'">Far away</span>
+            <span ng-if="notification.advert.store_name"><br>{{notification.advert.store_name}}</span>
+            <span ng-if="notification.advert.store_address"><br>{{notification.advert.store_address}}</span>
+        </p>
+        
+      </ion-item>         
+        
+        
     </ion-list> 
       
       <div ng-if="getNotificationsLength() <= 0" class="empty-container">

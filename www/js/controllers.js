@@ -104,10 +104,19 @@ angular.module('app.controllers', [])
 
 .controller('NotificationsCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup, $cordovaGeolocation, $cordovaDevice, $rootScope, $timeout) {
     $scope.notifications = [];
+    $scope.tempNotifications = [];
     $scope.loadingLinks = false;
     $scope.loadingAdvert = false;
     $scope.timeoutLink = false;
+    $scope.loadingBeacons = false;
     $scope.getNotifications = function(){
+        if ($scope.notifications.length > 0){
+            $scope.tempNotifications = angular.copy($scope.notifications);
+            $scope.loadingBeacons = true;
+            $timeout(function(){
+                $scope.loadingBeacons = false;
+            },2000)
+        }
         $scope.notifications = [];
         for (var index in $rootScope.inRangeBeacons){
             $scope.addNotifiction($rootScope.inRangeBeacons[index]);    
@@ -116,11 +125,12 @@ angular.module('app.controllers', [])
     }
     
     $scope.addNotifiction = function(beacon){
-        $scope.notifications.push(beacon); 
         MainService.getAdvert(beacon).then(function(data){
-            beacon.advert = data;                   
+            beacon.advert = data;  
+            $scope.notifications.push(beacon);                         
         },function(data){
-            beacon.advert = {};              
+            beacon.advert = {};  
+            $scope.notifications.push(beacon);             
             if (data.status_code === 401){
                 $timeout(function(){$rootScope.$broadcast("openRegister");});
             } 
@@ -128,7 +138,12 @@ angular.module('app.controllers', [])
     }
     
     $scope.getNotificationsLength = function(){
-        return $scope.notifications.length;
+        if ($scope.loadingBeacons){
+            return $scope.tempNotifications.length;
+        }
+        else{
+            return $scope.notifications.length;
+        }
     }
     
 
