@@ -49,9 +49,13 @@ angular.module('app.controllers', [])
         $rootScope.$on("userRegistered", function(){
             MainService.getBeacons().then(function(data){
                 $rootScope.rangedBeacons = data;
+                var seenUUID = [];
                 for (var index in $rootScope.rangedBeacons){
                     var beacon = $rootScope.rangedBeacons[index];
-                    if (window.cordova){$cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));}
+                    if (seenUUID.indexOf(beacon.uuid) < 0){
+                        if (window.cordova){$cordovaBeacon.startRangingBeaconsInRegion($cordovaBeacon.createBeaconRegion("estimote" + index, beacon.uuid, beacon.major, beacon.minor));}
+                        seenUUID.push(beacon.uuid);
+                    }
                 }
             });
         });
