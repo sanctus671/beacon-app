@@ -134,7 +134,7 @@ angular.module('app.controllers', [])
             $scope.notifications.push(beacon);                         
         },function(data){
             beacon.advert = {};  
-            $scope.notifications.push(beacon);             
+            //$scope.notifications.push(beacon);             
             if (data.status_code === 401){
                 $timeout(function(){$rootScope.$broadcast("openRegister");});
             } 
