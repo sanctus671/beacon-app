@@ -40,28 +40,33 @@
 	<preference name="SplashShowOnlyFirstTime" value="true" />
 	<preference name="SplashScreenBackgroundColor" value="white" />
 	<preference name="ShowSplashScreenSpinner" value="false"/>
-	
-	
     <gap:plugin name="cordova-plugin-splashscreen" source="npm"/>    
+    
     <gap:plugin name="cordova-plugin-customurlscheme" source="npm">
       <param name="URL_SCHEME" value="grabad" />
     </gap:plugin>    
 
+    <gap:plugin name="cordova-plugin-network-information" source="npm"/>
 
+
+	
 	<gap:plugin name="cordova-plugin-statusbar" source="npm"/>
 	
 
 	<gap:plugin name="cordova-plugin-geolocation" source="npm"/>
-    <gap:plugin name="cordova-plugin-device-motion" source="npm" version="1.2.2"/>
-	<gap:plugin name="cordova-plugin-gyroscope" source="npm"/>
+        <gap:plugin name="cordova-plugin-device-motion" source="npm" version="1.2.2"/>
+		<gap:plugin name="cordova-plugin-gyroscope" source="npm"/>
 	<gap:plugin name="com.unarin.cordova.beacon" source="npm"/>
-	
 	<gap:plugin name="ionic-plugin-keyboard" source="npm"/>	
     <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
+	<gap:plugin name="cordova-plugin-inappbrowser" source="npm"/>	
 
-    <gap:plugin name="cordova-plugin-screen-orientation" source="npm"/>
+	<gap:plugin name="cordova-plugin-whitelist" source="npm"/>		
+	<gap:plugin name="cordova-plugin-device" source="npm" />
         
-    <gap:plugin name="cordova-plugin-ios-disableshaketoedit" source="npm"/>
+        <gap:plugin name="cordova-plugin-screen-orientation" source="npm"/>
+        
+        <gap:plugin name="cordova-plugin-ios-disableshaketoedit" source="npm"/>
 	
     <icon gap:platform="android" gap:qualifier="ldpi" src="resources/icon/android/icon-36-ldpi.png" />
     <icon gap:platform="android" gap:qualifier="mdpi" src="resources/icon/android/icon-48-mdpi.png" />
