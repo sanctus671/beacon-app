@@ -27,8 +27,11 @@ angular.module('app.controllers', [])
         
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, pluginResult) {
             var uniqueBeaconKey;
+            var currentKeys = [];
+            var previousKeys = Object.keys($rootScope.inRangeBeacons);
             for(var i = 0; i < pluginResult.beacons.length; i++) {
                 uniqueBeaconKey = pluginResult.beacons[i].uuid + ":" + pluginResult.beacons[i].major + ":" + pluginResult.beacons[i].minor;
+                currentKeys.push(uniqueBeaconKey);
                 /*
                 if (!(uniqueBeaconKey in $scope.inRangeBeacons)){
                     window.plugin.notification.local.add({
@@ -42,6 +45,11 @@ angular.module('app.controllers', [])
                 }
                 */
                 $rootScope.inRangeBeacons[uniqueBeaconKey] = pluginResult.beacons[i];
+            }
+            for (var index in previousKeys){
+                if (currentKeys.indexOf(previousKeys[index]) < 0){
+                    delete $rootScope.inRangeBeacons[previousKeys[index]];
+                }
             }
             $scope.$apply();
         });
