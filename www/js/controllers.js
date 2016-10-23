@@ -55,7 +55,15 @@ angular.module('app.controllers', [])
         });
         
         $rootScope.$on("userRegistered", function(){
+            if (!$scope.beaconsLoaded){
+                $scope.initBeacons();
+            }
+        });
+        
+        $scope.beaconsLoaded = false;
+        $scope.initBeacons = function(){
             MainService.getBeacons().then(function(data){
+                $scope.beaconsLoaded = true;
                 $rootScope.rangedBeacons = data;
                 var seenUUID = [];
                 for (var index in $rootScope.rangedBeacons){
@@ -65,8 +73,15 @@ angular.module('app.controllers', [])
                         seenUUID.push(beacon.uuid);
                     }
                 }
+            });  
+        }
+        
+        if (!$scope.beaconsLoaded){
+            AuthService.userIsLoggedIn().then(function(){
+                $scope.initBeacons();
             });
-        });
+        }        
+        
  
     });
     
