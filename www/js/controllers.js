@@ -62,7 +62,9 @@ angular.module('app.controllers', [])
         
         $scope.beaconsLoaded = false;
         $scope.initBeacons = function(){
+            console.log("initating");
             MainService.getBeacons().then(function(data){
+                console.log(data);
                 $scope.beaconsLoaded = true;
                 $rootScope.rangedBeacons = data;
                 var seenUUID = [];
