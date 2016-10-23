@@ -96,9 +96,9 @@ angular.module('app.controllers', [])
             $scope.error = "Please enter all fields";
             return;
         }
+        $scope.registerModal.hide();
+        $scope.registerModalOpened = false;        
         AuthService.register($scope.registerUser).then(function(){
-            $scope.registerModal.hide();
-            $scope.registerModalOpened = false;
             $timeout(function(){$rootScope.$broadcast("userRegistered");$rootScope.$broadcast("openTutorial");});
         },function(data){
             $scope.error = "An error occured. Please try again.";

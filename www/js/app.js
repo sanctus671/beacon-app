@@ -44,6 +44,13 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
             .fail(function(e) {  })
             .done();   
     }
+    
+    if (window.cordova && window.cordova.plugins && cordova.plugins.BluetoothStatus){
+        cordova.plugins.BluetoothStatus.initPlugin();
+        if (!cordova.plugins.BluetoothStatus.hasBTLE){
+            alert("Your device does not support this app. Please use another device.");
+        }
+    }
 
   
     $ionicPlatform.on("resume", function(){ 

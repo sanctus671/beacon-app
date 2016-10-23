@@ -67,6 +67,8 @@
         <gap:plugin name="cordova-plugin-screen-orientation" source="npm"/>
         
         <gap:plugin name="cordova-plugin-ios-disableshaketoedit" source="npm"/>
+        
+        <gap:plugin name="cordova-plugin-bluetooth-status" source="npm"/>
 	
     <icon gap:platform="android" gap:qualifier="ldpi" src="resources/icon/android/icon-36-ldpi.png" />
     <icon gap:platform="android" gap:qualifier="mdpi" src="resources/icon/android/icon-48-mdpi.png" />
