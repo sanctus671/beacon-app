@@ -41,7 +41,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
                     cordova.plugins.locationManager.enableBluetooth();        
                 }
             })
-            .fail(function(e) { alert("Your device does not support this app. Please use another device."); })
+            .fail(function(e) { alert("Your device may not support this app. Please use another device."); })
             .done();   
     }
 

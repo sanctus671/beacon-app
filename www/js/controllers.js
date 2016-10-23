@@ -295,7 +295,9 @@ angular.module('app.controllers', [])
             var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
             MainService.saveRecord(record);
           }, function(err) {
-            // error
+            var uuid = $cordovaDevice.getUUID();
+            var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:""}
+            MainService.saveRecord(record);
           });        
     }    
     
@@ -492,6 +494,7 @@ angular.module('app.controllers', [])
           null,
           function(error) {
           // An error occurred
+          alert("Your device may not support this app. Please use another device.");
           $scope.loading = false;
           },
           function(result) {
@@ -506,6 +509,7 @@ angular.module('app.controllers', [])
         gyroscope.then(
             null,
             function(error){
+                alert("Your device may not support this app. Please use another device.");
             },
             function(result){
                 var x = result.x;
@@ -616,7 +620,16 @@ angular.module('app.controllers', [])
             var record = {advert_id: $scope.advert.id,beacon_id:beaconID, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
             MainService.saveRecord(record);
           }, function(err) {
-            // error
+            var uuid = $cordovaDevice.getUUID();
+            var beaconID = "";
+            for (var index in $rootScope.rangedBeacons){
+                if ($rootScope.rangedBeacons[index].uuid === $scope.currentBeacon.uuid && $rootScope.rangedBeacons[index].major === $scope.currentBeacon.major && $rootScope.rangedBeacons[index].minor === $scope.currentBeacon.minor){
+                    beaconID = $rootScope.rangedBeacons[index].id;
+                    break;
+                }
+            }            
+            var record = {advert_id: $scope.advert.id,beacon_id:beaconID, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
+            MainService.saveRecord(record);
           });        
     }
     
@@ -785,7 +798,9 @@ angular.module('app.controllers', [])
             var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:lat + ", " + long}
             MainService.saveRecord(record);
           }, function(err) {
-            // error
+            var uuid = $cordovaDevice.getUUID();
+            var record = {advert_id: $scope.advert.id, action:action, device: $rootScope.devicePlatform + ionic.Platform.version(), device_id: uuid, location:""}
+            MainService.saveRecord(record);
           });        
     }    
     
