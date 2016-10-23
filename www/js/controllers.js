@@ -48,7 +48,7 @@ angular.module('app.controllers', [])
             }
             for (var index in previousKeys){
                 if (currentKeys.indexOf(previousKeys[index]) < 0){
-                    delete $rootScope.inRangeBeacons[previousKeys[index]];
+                    //delete $rootScope.inRangeBeacons[previousKeys[index]];
                 }
             }
             $scope.$apply();
@@ -59,10 +59,7 @@ angular.module('app.controllers', [])
         });
 
         $scope.initBeacons = function(){
-            console.log("initiating");
             MainService.getBeacons().then(function(data){
-                console.log(data);
-                $scope.beaconsLoaded = true;
                 $rootScope.rangedBeacons = data;
                 var seenUUID = [];
                 for (var index in $rootScope.rangedBeacons){
@@ -72,7 +69,6 @@ angular.module('app.controllers', [])
                         seenUUID.push(beacon.uuid);
                     }
                 }
-                console.log(seenUUID);
             });  
         }
         
