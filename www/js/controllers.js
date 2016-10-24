@@ -335,7 +335,7 @@ angular.module('app.controllers', [])
     $rootScope.$on("userRegistered", function(){
         $timeout(function(){
             $scope.searchTimeout = true;
-        },5000);
+        },7000);
     })
     
     $timeout(function(){
@@ -517,22 +517,20 @@ angular.module('app.controllers', [])
 
                     var beacon = {}; var proximity = false; 
                     for (var index in $rootScope.inRangeBeacons){
-                        if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate" && $rootScope.inRangeBeacons[index].uuid === "12345678-1234-1234-1234-123456789012" && Object.keys($rootScope.inRangeBeacons).length < 2){
-                            beacon = $rootScope.inRangeBeacons[index];
-                            proximity = "ProximityImmediate";
-                            break;                            
-                        }
-                        if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate" && $rootScope.inRangeBeacons[index].uuid !== "12345678-1234-1234-1234-123456789012"){
-                            beacon = $rootScope.inRangeBeacons[index];
-                            proximity = "ProximityImmediate";
-                            break;
-                        }
-                        else if ($rootScope.inRangeBeacons[index].proximity === "ProximityNear" && proximity !== "ProximityImmediate"){
-                            beacon = $rootScope.inRangeBeacons[index];
-                            proximity = "ProximityNear";
-                        }
-                        else if (proximity !== "ProximityImmediate" && proximity !== "ProximityNear"){
-                            beacon = $rootScope.inRangeBeacons[index];
+                        //check if beacon is in the ranged beacons
+                        if ($scope.isRangedBeacon($rootScope.inRangeBeacons[index])){
+                            if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate"){
+                                beacon = $rootScope.inRangeBeacons[index];
+                                proximity = "ProximityImmediate";
+                                break;
+                            }
+                            else if ($rootScope.inRangeBeacons[index].proximity === "ProximityNear" && proximity !== "ProximityImmediate"){
+                                beacon = $rootScope.inRangeBeacons[index];
+                                proximity = "ProximityNear";
+                            }
+                            else if (proximity !== "ProximityImmediate" && proximity !== "ProximityNear"){
+                                beacon = $rootScope.inRangeBeacons[index];
+                            }
                         }
                     }
                     $scope.currentBeacon = beacon;
@@ -546,6 +544,16 @@ angular.module('app.controllers', [])
         
     },false);
     
+    $scope.isRangedBeacon = function(beacon){
+        if (beacon.isRanged){return true;}
+        for (var index in $rootScope.rangedBeacons){
+            if ($rootScope.rangedBeacons[index].uuid === beacon.uuid && $rootScope.rangedBeacons[index].major === beacon.major && $rootScope.rangedBeacons[index].minor === beacon.minor){
+                beacon.isRanged = true;
+                return true;
+            }
+        }
+        return false;
+    }
  
     $scope.doAction = function(action){
         if (action === 'phonepopup'){
