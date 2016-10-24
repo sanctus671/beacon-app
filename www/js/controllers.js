@@ -335,7 +335,7 @@ angular.module('app.controllers', [])
     $rootScope.$on("userRegistered", function(){
         $timeout(function(){
             $scope.searchTimeout = true;
-        },7000);
+        },10000);
     })
     
     $timeout(function(){
