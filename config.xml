@@ -121,8 +121,11 @@
     <gap:splash gap:platform="android" src="resources/screen/android/screen-xhdpi-portait.png" gap:qualifier="port-xhdpi"/>
 	
 
-
-
+    
+    
+    <gap:splash src="resources/splash.png" />
+    
+    
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
