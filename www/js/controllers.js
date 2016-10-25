@@ -317,6 +317,7 @@ angular.module('app.controllers', [])
     $scope.loadingAdvert = false;
     $scope.timeoutLink = false;
     $scope.searchTimeout = false;
+    $scope.tapToOpen = false;
     $scope.currentBeacon = {uuid:0,major:0,minor:0};
     $ionicModal.fromTemplateUrl('templates/modals/advert.html', {
         scope: $scope,
@@ -491,7 +492,8 @@ angular.module('app.controllers', [])
           null,
           function(error) {
           // An error occurred
-          alert("Your device may not support this app. Please use another device.");
+          $scope.tapToOpen = true;
+          alert("Your device may not support motion gestures. Please tap to grab this ad.");
           $scope.loading = false;
           },
           function(result) {
@@ -506,7 +508,8 @@ angular.module('app.controllers', [])
         gyroscope.then(
             null,
             function(error){
-                alert("Your device may not support this app. Please use another device.");
+                $scope.tapToOpen = true;
+                alert("Your device may not support motion gestures. Please tap to grab this ad.");
             },
             function(result){
                 var x = result.x;
@@ -553,6 +556,31 @@ angular.module('app.controllers', [])
             }
         }
         return false;
+    }
+    
+    $scope.tapOpenAdvert = function(){
+        if (!$scope.tapToOpen){return;}
+        var beacon = {}; var proximity = false; 
+        for (var index in $rootScope.inRangeBeacons){
+            //check if beacon is in the ranged beacons
+            if ($scope.isRangedBeacon($rootScope.inRangeBeacons[index])){
+                if ($rootScope.inRangeBeacons[index].proximity === "ProximityImmediate"){
+                    beacon = $rootScope.inRangeBeacons[index];
+                    proximity = "ProximityImmediate";
+                    break;
+                }
+                else if ($rootScope.inRangeBeacons[index].proximity === "ProximityNear" && proximity !== "ProximityImmediate"){
+                    beacon = $rootScope.inRangeBeacons[index];
+                    proximity = "ProximityNear";
+                }
+                else if (proximity !== "ProximityImmediate" && proximity !== "ProximityNear"){
+                    beacon = $rootScope.inRangeBeacons[index];
+                }
+            }
+        }
+        $scope.currentBeacon = beacon;
+        $scope.getAdvert(beacon);
+        $scope.openAdvertModal();           
     }
  
     $scope.doAction = function(action){
