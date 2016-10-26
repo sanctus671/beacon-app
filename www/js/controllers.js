@@ -552,8 +552,9 @@ angular.module('app.controllers', [])
     $scope.isRangedBeacon = function(beacon){
         console.log(beacon);
         console.log($rootScope.rangedBeacons);
+        if (!beacon.uuid){return false;}
         for (var index in $rootScope.rangedBeacons){
-            if ($rootScope.rangedBeacons[index].uuid === beacon.uuid && $rootScope.rangedBeacons[index].major === beacon.major && $rootScope.rangedBeacons[index].minor === beacon.minor){
+            if ($rootScope.rangedBeacons[index].uuid.toLowerCase() === beacon.uuid.toLowerCase() && $rootScope.rangedBeacons[index].major === beacon.major && $rootScope.rangedBeacons[index].minor === beacon.minor){
                 return true;break;
             }
         }
@@ -647,7 +648,7 @@ angular.module('app.controllers', [])
             var uuid = $cordovaDevice.getUUID();
             var beaconID = "";
             for (var index in $rootScope.rangedBeacons){
-                if ($rootScope.rangedBeacons[index].uuid === $scope.currentBeacon.uuid && $rootScope.rangedBeacons[index].major === $scope.currentBeacon.major && $rootScope.rangedBeacons[index].minor === $scope.currentBeacon.minor){
+                if ($rootScope.rangedBeacons[index].uuid.toLowerCase() === $scope.currentBeacon.uuid.toLowerCase() && $rootScope.rangedBeacons[index].major === $scope.currentBeacon.major && $rootScope.rangedBeacons[index].minor === $scope.currentBeacon.minor){
                     beaconID = $rootScope.rangedBeacons[index].id;
                     break;
                 }
@@ -658,7 +659,7 @@ angular.module('app.controllers', [])
             var uuid = $cordovaDevice.getUUID();
             var beaconID = "";
             for (var index in $rootScope.rangedBeacons){
-                if ($rootScope.rangedBeacons[index].uuid === $scope.currentBeacon.uuid && $rootScope.rangedBeacons[index].major === $scope.currentBeacon.major && $rootScope.rangedBeacons[index].minor === $scope.currentBeacon.minor){
+                if ($rootScope.rangedBeacons[index].uuid.toLowerCase() === $scope.currentBeacon.uuid.toLowerCase() && $rootScope.rangedBeacons[index].major === $scope.currentBeacon.major && $rootScope.rangedBeacons[index].minor === $scope.currentBeacon.minor){
                     beaconID = $rootScope.rangedBeacons[index].id;
                     break;
                 }
