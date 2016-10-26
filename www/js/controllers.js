@@ -427,7 +427,7 @@ angular.module('app.controllers', [])
     })
     
     $scope.$on('modal.hidden', function() {
-        $scope.modalOpen = false;
+        $timeout(function(){$scope.modalOpen = false;},1000);
         screen.lockOrientation('portrait');
         if ($scope.timeoutLink){
             $timeout.cancel($scope.timeoutLink);
@@ -436,7 +436,7 @@ angular.module('app.controllers', [])
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function() {
-        $scope.modalOpen = false;
+        $timeout(function(){$scope.modalOpen = false;},1000);
         screen.lockOrientation('portrait');
         if ($scope.timeoutLink){
             $timeout.cancel($scope.timeoutLink);
