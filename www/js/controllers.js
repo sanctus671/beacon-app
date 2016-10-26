@@ -519,6 +519,7 @@ angular.module('app.controllers', [])
                 if ($scope.acceleration.y > 4 && isMoving && Object.keys($rootScope.inRangeBeacons).length > 0 && !$scope.modalOpen && $state.current.name === "tab.drag"){
 
                     var beacon = {}; var proximity = false; 
+                    console.log($rootScope.inRangeBeacons);
                     for (var index in $rootScope.inRangeBeacons){
                         //check if beacon is in the ranged beacons
                         if ($scope.isRangedBeacon($rootScope.inRangeBeacons[index])){
@@ -536,6 +537,7 @@ angular.module('app.controllers', [])
                             }
                         }
                     }
+                    console.log(beacon);
                     $scope.currentBeacon = beacon;
                     $scope.getAdvert(beacon);
                     $scope.openAdvertModal();              
@@ -548,11 +550,11 @@ angular.module('app.controllers', [])
     },false);
     
     $scope.isRangedBeacon = function(beacon){
-        if (beacon.isRanged){return true;}
+        console.log(beacon);
+        console.log($rootScope.rangedBeacons);
         for (var index in $rootScope.rangedBeacons){
             if ($rootScope.rangedBeacons[index].uuid === beacon.uuid && $rootScope.rangedBeacons[index].major === beacon.major && $rootScope.rangedBeacons[index].minor === beacon.minor){
-                beacon.isRanged = true;
-                return true;
+                return true;break;
             }
         }
         return false;
