@@ -538,7 +538,7 @@ angular.module('app.controllers', [])
                         }
                     }
                     console.log(beacon);
-                    alert(beacon);
+                    alert("here" + JSON.stringify(beacon));
                     $scope.currentBeacon = beacon;
                     $scope.getAdvert(beacon);
                     $scope.openAdvertModal();              
@@ -552,9 +552,12 @@ angular.module('app.controllers', [])
     
     $scope.isRangedBeacon = function(beacon){
         console.log(beacon);
+
         console.log($rootScope.rangedBeacons);
         if (!beacon.uuid){return false;}
         for (var index in $rootScope.rangedBeacons){
+            alert(JSON.stringify(beacon));
+            alert(JSON.stringify($rootScope.rangedBeacons[index]));            
             if ($rootScope.rangedBeacons[index].uuid.toLowerCase() === beacon.uuid.toLowerCase() && $rootScope.rangedBeacons[index].major === beacon.major && $rootScope.rangedBeacons[index].minor === beacon.minor){
                 alert("yes");
                 return true;break;
