@@ -124,7 +124,7 @@ angular.module('app.controllers', [])
             $scope.loadingBeacons = true;
             $timeout(function(){
                 $scope.loadingBeacons = false;
-            },1000)
+            },2000)
         }
         $scope.notifications = [];
         for (var index in $rootScope.inRangeBeacons){
@@ -132,6 +132,8 @@ angular.module('app.controllers', [])
         }
         $scope.$broadcast('scroll.refreshComplete');
     }
+    
+    
     
     $scope.addNotifiction = function(beacon){
         MainService.getAdvert(beacon).then(function(data){
@@ -156,7 +158,6 @@ angular.module('app.controllers', [])
     }
     
 
-    
 
     $scope.$on("$ionicView.afterEnter", function(event, data){
        $scope.getNotifications();
@@ -538,7 +539,6 @@ angular.module('app.controllers', [])
                         }
                     }
                     console.log(beacon);
-                    alert("here" + JSON.stringify(beacon));
                     $scope.currentBeacon = beacon;
                     $scope.getAdvert(beacon);
                     $scope.openAdvertModal();              
@@ -559,7 +559,6 @@ angular.module('app.controllers', [])
             //alert(JSON.stringify(beacon));
             //alert(JSON.stringify($rootScope.rangedBeacons[index]));            
             if ($rootScope.rangedBeacons[index].uuid.toLowerCase() === beacon.uuid.toLowerCase() && parseInt($rootScope.rangedBeacons[index].major) === parseInt(beacon.major) && parseInt($rootScope.rangedBeacons[index].minor) === parseInt(beacon.minor)){
-                alert("yes");
                 return true;break;
             }
         }
