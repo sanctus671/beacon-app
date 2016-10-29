@@ -124,7 +124,7 @@ angular.module('app.controllers', [])
             $scope.loadingBeacons = true;
             $timeout(function(){
                 $scope.loadingBeacons = false;
-            },2000)
+            },1000)
         }
         $scope.notifications = [];
         for (var index in $rootScope.inRangeBeacons){
@@ -538,6 +538,7 @@ angular.module('app.controllers', [])
                         }
                     }
                     console.log(beacon);
+                    alert(beacon);
                     $scope.currentBeacon = beacon;
                     $scope.getAdvert(beacon);
                     $scope.openAdvertModal();              
@@ -555,6 +556,7 @@ angular.module('app.controllers', [])
         if (!beacon.uuid){return false;}
         for (var index in $rootScope.rangedBeacons){
             if ($rootScope.rangedBeacons[index].uuid.toLowerCase() === beacon.uuid.toLowerCase() && $rootScope.rangedBeacons[index].major === beacon.major && $rootScope.rangedBeacons[index].minor === beacon.minor){
+                alert("yes");
                 return true;break;
             }
         }

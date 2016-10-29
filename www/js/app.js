@@ -47,6 +47,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
 
   
     $ionicPlatform.on("resume", function(){ 
+        if (!$rootScope.keepAdvertOpen){ $rootScope.inRangeBeacons = {};$rootScope.rangedBeacons = [];}
         $rootScope.keepAdvertOpen = false;  
         
         //window.plugin.notification.local.cancelAll();
@@ -60,7 +61,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
     });    
     
     $ionicPlatform.on("pause", function(){ 
-        if (!$rootScope.keepAdvertOpen){ $rootScope.inRangeBeacons = [];}
+        if (!$rootScope.keepAdvertOpen){$rootScope.inRangeBeacons = {};$rootScope.rangedBeacons = [];}
         if (!$rootScope.keepAdvertOpen){$rootScope.$broadcast("closeAdvert");}
     });    
     
