@@ -556,9 +556,9 @@ angular.module('app.controllers', [])
         console.log($rootScope.rangedBeacons);
         if (!beacon.uuid){return false;}
         for (var index in $rootScope.rangedBeacons){
-            alert(JSON.stringify(beacon));
-            alert(JSON.stringify($rootScope.rangedBeacons[index]));            
-            if ($rootScope.rangedBeacons[index].uuid.toLowerCase() === beacon.uuid.toLowerCase() && $rootScope.rangedBeacons[index].major === beacon.major && $rootScope.rangedBeacons[index].minor === beacon.minor){
+            //alert(JSON.stringify(beacon));
+            //alert(JSON.stringify($rootScope.rangedBeacons[index]));            
+            if ($rootScope.rangedBeacons[index].uuid.toLowerCase() === beacon.uuid.toLowerCase() && parseInt($rootScope.rangedBeacons[index].major) === parseInt(beacon.major) && parseInt($rootScope.rangedBeacons[index].minor) === parseInt(beacon.minor)){
                 alert("yes");
                 return true;break;
             }
