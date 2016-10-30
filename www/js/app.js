@@ -52,12 +52,18 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services', 'app.config',
         
         //window.plugin.notification.local.cancelAll();
         AuthService.userIsLoggedIn().then(function(){
-            $timeout(function(){$rootScope.$broadcast("userRegistered");});
+            $timeout(function(){
+                $rootScope.$broadcast("userRegistered");
+                $rootScope.$broadcast("checkSharedAd");
+            });
+            
             
         },function(){
             //reregister user
             $timeout(function(){$rootScope.$broadcast("openRegister");});
         });
+        
+        
     });    
     
     $ionicPlatform.on("pause", function(){ 

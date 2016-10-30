@@ -113,19 +113,12 @@ angular.module('app.controllers', [])
 
 .controller('NotificationsCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup, $cordovaGeolocation, $cordovaDevice, $rootScope, $timeout) {
     $scope.notifications = [];
-    $scope.tempNotifications = [];
     $scope.loadingLinks = false;
     $scope.loadingAdvert = false;
     $scope.timeoutLink = false;
-    $scope.loadingBeacons = false;
+    
+    
     $scope.getNotifications = function(){
-        if ($scope.notifications.length > 0){
-            $scope.tempNotifications = angular.copy($scope.notifications);
-            $scope.loadingBeacons = true;
-            $timeout(function(){
-                $scope.loadingBeacons = false;
-            },2000)
-        }
         $scope.notifications = [];
         for (var index in $rootScope.inRangeBeacons){
             $scope.addNotifiction($rootScope.inRangeBeacons[index]);    
@@ -133,15 +126,13 @@ angular.module('app.controllers', [])
         $scope.$broadcast('scroll.refreshComplete');
     }
     
-    
-    
     $scope.addNotifiction = function(beacon){
         MainService.getAdvert(beacon).then(function(data){
             beacon.advert = data;  
             $scope.notifications.push(beacon);                         
         },function(data){
             beacon.advert = {};  
-            //$scope.notifications.push(beacon);             
+            $scope.notifications.push(beacon);             
             if (data.status_code === 401){
                 $timeout(function(){$rootScope.$broadcast("openRegister");});
             } 
@@ -149,12 +140,7 @@ angular.module('app.controllers', [])
     }
     
     $scope.getNotificationsLength = function(){
-        if ($scope.loadingBeacons){
-            return $scope.tempNotifications.length;
-        }
-        else{
-            return $scope.notifications.length;
-        }
+        return $scope.notifications.length;
     }
     
 
@@ -341,7 +327,76 @@ angular.module('app.controllers', [])
     })
     
     $timeout(function(){
-
+        $scope.checkShareAd();
+    },3000); 
+    
+    $rootScope.$on("checkSharedAd",function(){
+        $scope.checkShareAd();
+    })
+    
+    
+    //open default beacon
+    $rootScope.$on("openTutorial", function(){
+        $timeout(function(){
+            $scope.openAdvertModal();
+            $scope.loadingAdvert = true;
+            MainService.getAdvertById(1).then(function(data){
+                $scope.loadingAdvert = false;
+                $scope.advert = data;
+                if ($scope.advert.auto_open){
+                    if ($scope.advert.auto_open_timeout > 0){
+                        $scope.timeoutLink = $timeout(function(){
+                            $scope.doAction('link');
+                        },$scope.advert.auto_open_timeout*1000);
+                    }
+                    else{
+                        $scope.doAction('link');
+                    }
+                }                
+                if ($scope.advert.link_timeout > 0){
+                    $scope.loadingLinks = true;
+                    $timeout(function(){
+                        $scope.loadingLinks = false;
+                    },$scope.advert.link_timeout*1000);
+                }
+                else{
+                    $scope.loadingLinks = false;
+                }  
+                $scope.saveRecord('grab');
+            },function(data){
+                $scope.loadingAdvert = false;
+                $timeout(function(){$scope.advertModal.hide()},2000);
+                if (data.status_code === 401){
+                    $timeout(function(){$rootScope.$broadcast("openRegister");});
+                } 
+            })   
+        },1000);
+    })
+    
+    
+    $rootScope.$on("closeAdvert",function(){
+        $scope.advertModal.hide();
+    })
+    
+    $scope.$on('modal.hidden', function() {
+        $timeout(function(){$scope.modalOpen = false;},1000);
+        screen.lockOrientation('portrait');
+        if ($scope.timeoutLink){
+            $timeout.cancel($scope.timeoutLink);
+        }
+        
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+        $timeout(function(){$scope.modalOpen = false;},1000);
+        screen.lockOrientation('portrait');
+        if ($scope.timeoutLink){
+            $timeout.cancel($scope.timeoutLink);
+        }        
+    });   
+    
+    
+    $scope.checkShareAd = function(){
         if (window.localStorage.external_load !== null && window.localStorage.external_load !=="null" && window.localStorage.external_load !== undefined && window.localStorage.external_load){
 
             var url = window.localStorage.external_load;
@@ -373,6 +428,7 @@ angular.module('app.controllers', [])
                 else{
                     $scope.loadingLinks = false;
                 }  
+                $scope.saveRecord('grab');
             },function(data){
                 $scope.loadingAdvert = false;
                 $timeout(function(){$scope.advertModal.hide()},2000);
@@ -381,68 +437,8 @@ angular.module('app.controllers', [])
                 } 
             })              
             window.localStorage.external_load = null;
-        }
-    },3000); 
-    
-    
-    //open default beacon
-    $rootScope.$on("openTutorial", function(){
-        $timeout(function(){
-            $scope.openAdvertModal();
-            $scope.loadingAdvert = true;
-            MainService.getAdvertById(1).then(function(data){
-                $scope.loadingAdvert = false;
-                $scope.advert = data;
-                if ($scope.advert.auto_open){
-                    if ($scope.advert.auto_open_timeout > 0){
-                        $scope.timeoutLink = $timeout(function(){
-                            $scope.doAction('link');
-                        },$scope.advert.auto_open_timeout*1000);
-                    }
-                    else{
-                        $scope.doAction('link');
-                    }
-                }                
-                if ($scope.advert.link_timeout > 0){
-                    $scope.loadingLinks = true;
-                    $timeout(function(){
-                        $scope.loadingLinks = false;
-                    },$scope.advert.link_timeout*1000);
-                }
-                else{
-                    $scope.loadingLinks = false;
-                }  
-            },function(data){
-                $scope.loadingAdvert = false;
-                $timeout(function(){$scope.advertModal.hide()},2000);
-                if (data.status_code === 401){
-                    $timeout(function(){$rootScope.$broadcast("openRegister");});
-                } 
-            })   
-        },1000);
-    })
-    
-    
-    $rootScope.$on("closeAdvert",function(){
-        $scope.advertModal.hide();
-    })
-    
-    $scope.$on('modal.hidden', function() {
-        $timeout(function(){$scope.modalOpen = false;},1000);
-        screen.lockOrientation('portrait');
-        if ($scope.timeoutLink){
-            $timeout.cancel($scope.timeoutLink);
-        }
-        
-    });
-    // Execute action on remove modal
-    $scope.$on('modal.removed', function() {
-        $timeout(function(){$scope.modalOpen = false;},1000);
-        screen.lockOrientation('portrait');
-        if ($scope.timeoutLink){
-            $timeout.cancel($scope.timeoutLink);
         }        
-    });    
+    }
     
     $scope.getBeaconCount = function(){
         return Object.keys($rootScope.inRangeBeacons).length;
@@ -474,7 +470,8 @@ angular.module('app.controllers', [])
             }
             else{
                 $scope.loadingLinks = false;
-            }            
+            }     
+            $scope.saveRecord('grab');
             
         },function(data){
             $scope.loadingAdvert = false;
