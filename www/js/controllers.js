@@ -126,6 +126,8 @@ angular.module('app.controllers', [])
         $scope.$broadcast('scroll.refreshComplete');
     }
     
+    $scope.getNotifications();
+    
     $scope.addNotifiction = function(beacon){
         MainService.getAdvert(beacon).then(function(data){
             beacon.advert = data;  
@@ -140,7 +142,7 @@ angular.module('app.controllers', [])
     }
     
     $scope.getNotificationsLength = function(){
-        return $scope.notifications.length;
+        return Object.keys($scope.notifications).length;
     }
     
 
@@ -701,6 +703,8 @@ angular.module('app.controllers', [])
             } 
         })
     }
+    
+    $scope.doRefresh();
 
     $scope.$on("$ionicView.afterEnter", function(event, data){
        $scope.doRefresh();
