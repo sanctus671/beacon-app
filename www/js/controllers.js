@@ -112,15 +112,15 @@ angular.module('app.controllers', [])
 
 
 .controller('NotificationsCtrl', function($scope, MainService, AuthService, $ionicModal, $cordovaSocialSharing, $ionicPopup, $cordovaGeolocation, $cordovaDevice, $rootScope, $timeout) {
-    $scope.notifications = [];
+    $scope.notifications = {};
     $scope.loadingLinks = false;
     $scope.loadingAdvert = false;
     $scope.timeoutLink = false;
     
     
     $scope.getNotifications = function(){
-        $scope.notifications = [];
-        for (var index in $rootScope.inRangeBeacons){
+        //$scope.notifications = {};
+        for (var index in $rootScope.inRangeBeacons){        
             $scope.addNotifiction($rootScope.inRangeBeacons[index]);    
         }
         $scope.$broadcast('scroll.refreshComplete');
@@ -129,10 +129,10 @@ angular.module('app.controllers', [])
     $scope.addNotifiction = function(beacon){
         MainService.getAdvert(beacon).then(function(data){
             beacon.advert = data;  
-            $scope.notifications.push(beacon);                         
+            $scope.notifications[beacon.uuid + ":" + beacon.major + ":" + beacon.minor] = beacon;                         
         },function(data){
             beacon.advert = {};  
-            $scope.notifications.push(beacon);             
+            //$scope.notifications.push(beacon);             
             if (data.status_code === 401){
                 $timeout(function(){$rootScope.$broadcast("openRegister");});
             } 
